@@ -7,7 +7,7 @@ tags: [Hardware, LED]
 math: true
 mermaid: true
 render_with_liquid: false
-image: "title.jpeg"
+image: title.jpeg
 
 ---
 # 1. LED density là gì ?

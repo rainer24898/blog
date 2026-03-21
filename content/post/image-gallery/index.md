@@ -17,6 +17,6 @@ To use this feature, the image must be in the same directory as the Markdown fil
 
 ## Result
 
-![Image 1](1.jpg) ![Image 2](2.jpg)
+![Image 1](1.jpg) ![Image 3](2.jpg)
 
 > Photo by [mymind](https://unsplash.com/@mymind) and [Luke Chesser](https://unsplash.com/@lukechesser) on [Unsplash](https://unsplash.com/)

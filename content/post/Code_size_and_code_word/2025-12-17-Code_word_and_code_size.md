@@ -7,13 +7,13 @@ tags: [Linux]
 math: true
 mermaid: true
 render_with_liquid: false
-image: "Best-CPU-for-Gaming.png"
+image: Best-CPU-for-Gaming.png
 
 ---
 
 
 # Word size và instruction length của CPU: dễ nhầm ở đâu, khác nhau thế nào?
-![](69271fa6-b3c0-4964-87f3-fa5f5a69976e.png)
+![Image](69271fa6-b3c0-4964-87f3-fa5f5a69976e.png)
 
 > Một CPU 64-bit không có nghĩa mọi thứ bên trong nó đều “64-bit” theo cùng một cách.
 > Và `word size` của CPU cũng không đồng nghĩa với độ dài của một lệnh máy.
@@ -1379,7 +1379,7 @@ Tức là ngay cả trên một kiến trúc vốn nổi tiếng “gọn và đ
 
 ## 10. CPU thực sự dùng hai khái niệm này trong pipeline như thế nào?
 
-![](69271fa6-b3c0-4964-87f3-fa5f5a69976e.png)
+![Image](69271fa6-b3c0-4964-87f3-fa5f5a69976e.png)
 
 Để dễ hình dung, hãy nhìn pipeline đơn giản gồm 5 giai đoạn:
 
