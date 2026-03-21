@@ -7,7 +7,7 @@ tags: [Networking, Linux Driver, Linux]
 math: true
 mermaid: true
 render_with_liquid: false
-    # path: /blog/assets/img/post/UsbEthernet/usbheader.jpg
+    # path: /assets/img/post/UsbEthernet/usbheader.jpg
 ---
 
 # Cơ chế callback trong cấu trúc `struct net_device`

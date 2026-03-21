@@ -7,7 +7,7 @@ tags: [Beagle Bone Black, Usb Ethernet, Linux]
 math: true
 mermaid: true
 render_with_liquid: false
-    # path: /blog/assets/img/post/UsbEthernet/usbheader.jpg
+    # path: /assets/img/post/UsbEthernet/usbheader.jpg
 ---
 
 

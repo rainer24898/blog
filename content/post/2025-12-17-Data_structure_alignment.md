@@ -7,7 +7,7 @@ tags: [Linux]
 math: true
 mermaid: true
 render_with_liquid: false
-image: /blog/assets/img/post/Data_structure_alignment/https___dev-to-uploads.s3.amazonaws.com_uploads_articles_cqxa5bsgv49rr3gfrztv.webp
+image: "/assets/img/post/Data_structure_alignment/https___dev-to-uploads.s3.amazonaws.com_uploads_articles_cqxa5bsgv49rr3gfrztv.webp"
 
 ---
 

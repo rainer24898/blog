@@ -7,7 +7,7 @@ tags: [Linux, C Advanced, Linux Programming]
 math: true
 mermaid: true
 render_with_liquid: false
-    # path: /blog/assets/img/post/UsbEthernet/usbheader.jpg
+    # path: /assets/img/post/UsbEthernet/usbheader.jpg
 ---
 
 
@@ -17,7 +17,7 @@ Trong hệ điều hành Linux (và phần lớn các hệ điều hành nhân U
 
 Hệ điều hành phải đảm bảo rằng các ứng dụng người dùng không thể trực tiếp can thiệp hay phá hoại vào tài nguyên cốt lõi của hệ thống (nhân hệ điều hành, thiết bị phần cứng, bộ nhớ hệ thống quan trọng, v.v.). Nhân (kernel) đóng vai trò là tầng lõi, kiểm soát truy cập phần cứng, quản lý bộ nhớ, lập lịch tiến trình, và cung cấp các dịch vụ cần thiết cho ứng dụng. Trong khi đó, các ứng dụng và tiến trình người dùng chạy ở một tầng "cao hơn", ít đặc quyền hơn, tách biệt với kernel, nhằm ngăn chặn lỗi hoặc hành vi ác ý từ ứng dụng làm ảnh hưởng đến toàn bộ hệ thống.
 
-![Image 1](/blog/assets/img/post/User_spcace_and_kernel_space/1.png)
+![](/blog/assets/img/post/User_spcace_and_kernel_space/1.png)
 
 ### 1. Khái niệm về user space (không gian người dùng)
 
