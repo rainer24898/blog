@@ -1,7 +1,7 @@
 ---
 title: 5G NR Physical Layer Overview – UpLink
 author: rainer
-date: 2025-07-22 1:26:00 +0300
+date: 2025-07-22 1:26:00+0300
 categories: [5G NR]
 tags: [5G NR]
 math: true

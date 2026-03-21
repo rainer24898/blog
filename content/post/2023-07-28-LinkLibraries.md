@@ -1,7 +1,7 @@
 ---
 title: Link Libraries 
 author: rainer
-date: 2023-07-28 1:26:00 +0300
+date: 2023-07-28 1:26:00+0300
 categories: [Linux, Linux Programming, Link Libraries]
 tags: [Linux, Linux Programming, Link Libraries]
 math: true

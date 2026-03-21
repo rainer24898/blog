@@ -1,7 +1,7 @@
 ---
 title: Linux Boot
 author: rainer
-date: 2024-07-22 1:26:00 +0300
+date: 2024-07-22 1:26:00+0300
 categories: [Linux]
 tags: [Linux]
 math: true

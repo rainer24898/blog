@@ -1,7 +1,7 @@
 ---
 title: Linux File System
 author: rainer
-date: 2023-07-28 1:26:00 +0300
+date: 2023-07-28 1:26:00+0300
 categories: [Linux, Linux Programming]
 tags: [Linux, Linux Programming]
 math: true

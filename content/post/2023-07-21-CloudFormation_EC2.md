@@ -1,7 +1,7 @@
 ---
 title: Tự động hóa việc triển khai và quản lý cơ sở hạ tầng điện toán đám mây  AWS CloudFormation.
 author: rainer
-date: 2023-07-21 1:26:00 +0300
+date: 2023-07-21 1:26:00+0300
 categories: [Cloud, AWS Cloud]
 tags: [AWS Cloud]
 math: true

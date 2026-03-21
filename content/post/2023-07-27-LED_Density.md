@@ -1,7 +1,7 @@
 ---
 title: LED density
 author: rainer
-date: 2023-07-27 1:26:00 +0300
+date: 2023-07-27 1:26:00+0300
 categories: [Hardware, LED]
 tags: [Hardware, LED]
 math: true

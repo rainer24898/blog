@@ -1,7 +1,7 @@
 ---
 title: Memory layout
 author: rainer
-date: 2024-12-15 1:26:00 +0300
+date: 2024-12-15 1:26:00+0300
 categories: [C, C Advanced, Linux]
 tags: [C, C Advanced, Linux]
 math: true

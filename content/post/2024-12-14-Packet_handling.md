@@ -1,7 +1,7 @@
 ---
 title: Packet handling
 author: rainer
-date: 2024-12-15 1:26:00 +0300
+date: 2024-12-15 1:26:00+0300
 categories: [Linux, Networking, Linux Driver]
 tags: [Networking, Linux Driver, Linux]
 math: true

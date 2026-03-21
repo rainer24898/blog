@@ -1,7 +1,7 @@
 ---
 title: Vector in C
 author: rainer
-date: 2024-09-11 1:26:00 +0300
+date: 2024-09-11 1:26:00+0300
 categories: [C, Data structures and Algorithms]
 tags: [C, Data structures and Algorithms]
 math: true
