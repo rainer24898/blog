@@ -85,7 +85,7 @@ Một số mốc phổ biến:
   <img
     src="/blog/assets/img/post/Sorting_Algorithms/Bubble-sort-example-300px.gif"
     alt="CSI demo"
-    width="900"
+    <!-- width="900" -->
     loading="lazy">
 </p>
 
@@ -149,7 +149,7 @@ void bubble_sort(int a[], int n) {
   <img
     src="/blog/assets/img/post/Sorting_Algorithms/Selection-Sort-Animation.gif"
     alt="CSI demo"
-    width="900"
+    <!-- width="900" -->
     loading="lazy">
 </p>
 
@@ -209,7 +209,7 @@ void selection_sort(int a[], int n) {
   <img
     src="/blog/assets/img/post/Sorting_Algorithms/Insertion-sort-example.gif"
     alt="CSI demo"
-    width="900"
+    <!-- width="900" -->
     loading="lazy">
 </p>
 
@@ -265,7 +265,7 @@ void insertion_sort(int a[], int n) {
   <img
     src="/blog/assets/img/post/Sorting_Algorithms/Merge-sort-example-300px.gif"
     alt="CSI demo"
-    width="900"
+    <!-- width="900" -->
     loading="lazy">
 </p>
 
@@ -343,7 +343,7 @@ void merge_sort(int a[], int left, int right) {
   <img
     src="/blog/assets/img/post/Sorting_Algorithms/Quicksort-example.gif"
     alt="CSI demo"
-    width="900"
+    <!-- width="900" -->
     loading="lazy">
 </p>
 
@@ -420,7 +420,7 @@ Quick Sort rất nhạy với cách chọn pivot:
   <img
     src="/blog/assets/img/post/Sorting_Algorithms/Heap_sort_example.gif"
     alt="CSI demo"
-    width="900"
+    <!-- width="900" -->
     loading="lazy">
 </p>
 
@@ -487,7 +487,7 @@ void heap_sort(int a[], int n) {
   <img
     src="/blog/assets/img/post/Sorting_Algorithms/Counting_Sort_Animation.gif"
     alt="CSI demo"
-    width="900"
+    <!-- width="900" -->
     loading="lazy">
 </p>
 
@@ -529,7 +529,7 @@ Nếu `k` quá lớn so với `n` thì tốn bộ nhớ, không hiệu quả.
   <img
     src="/blog/assets/img/post/Sorting_Algorithms/radix.gif"
     alt="CSI demo"
-    width="900"
+    <!-- width="900" -->
     loading="lazy">
 </p>
 
