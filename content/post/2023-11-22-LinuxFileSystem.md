@@ -11,7 +11,7 @@ tags:
 math: true
 mermaid: true
 render_with_liquid: false
-image: https://rainer24898.github.io/blog/assets/img/post/LinuxFileSystem/title.png
+image: "/assets/img/post/LinuxFileSystem/title.png"
 ---
 
 # Tổng quan về file trên Linux

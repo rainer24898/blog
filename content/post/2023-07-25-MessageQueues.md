@@ -13,7 +13,7 @@ tags:
 math: true
 mermaid: true
 render_with_liquid: false
-image: https://rainer24898.github.io/blog/assets/img/post/MessageQueue/title.png
+image: "/assets/img/post/MessageQueue/title.png"
 ---
 
 # 1. Giới thiệu.
