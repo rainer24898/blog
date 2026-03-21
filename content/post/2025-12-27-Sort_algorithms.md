@@ -7,7 +7,7 @@ tags: [C, Data structures and Algorithms]
 math: true
 mermaid: true
 render_with_liquid: false
-image: https://rainer24898.github.io/blog/assets/img/post/PUCCH/maxresdefault.jpg
+image: https://rainer24898.github.io/blog/assets/img/post/Sorting_Algorithms/1__qUuB7vQ716KuLp6bx3-oQ.png
 ---
 
 # Tổng hợp các thuật toán sắp xếp
