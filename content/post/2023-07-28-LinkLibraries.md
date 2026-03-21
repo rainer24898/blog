@@ -1,14 +1,19 @@
 ---
-title: Link Libraries 
+title: Link Libraries
 author: rainer
-date: "2023-07-28T01:26:00+03:00"
-categories: [Linux, Linux Programming, Link Libraries]
-tags: [Linux, Linux Programming, Link Libraries]
+date: '2023-07-28T01:26:00+03:00'
+categories:
+- Linux
+- Linux Programming
+- Link Libraries
+tags:
+- Linux
+- Linux Programming
+- Link Libraries
 math: true
 mermaid: true
 render_with_liquid: false
-image: "/assets/img/post/Makefile_Lib/title.png"
-
+image: https://rainer24898.github.io/blog/assets/img/post/Makefile_Lib/title.png
 ---
 
 # Make file
@@ -102,11 +107,11 @@ Thư viện là một tập hợp các đoạn mã được biên dịch
 - Static lib
 - Shared lib
 
-![](/assets/img/post/Makefile_Lib/1.jpg)
+![](https://rainer24898.github.io/blog/assets/img/post/Makefile_Lib/1.jpg)
 
 Trong lập trình trên Linux, hai loại thư viện phổ biến là thư viện tĩnh (Static Library) và thư viện động (Shared Library). Cả hai loại này đều được sử dụng để tạo ra các chức năng mà có thể được tái sử dụng trong nhiều chương trình khác nhau, nhưng chúng khác nhau về cách liên kết và chia sẻ. Dưới đây là phân tích chi tiết và cách tạo ra chúng.
 
-![](/assets/img/post/Makefile_Lib/2.jpg)
+![](https://rainer24898.github.io/blog/assets/img/post/Makefile_Lib/2.jpg)
 
 ## Static Lib
 

@@ -272,7 +272,7 @@ Outputs:
 
 Nếu bạn muốn thay đổi port của proxy sever, sửa giá trị của lệnh `http_port 2498` theo giá trị bạn muốn trong khoảng `1000 - 65535`.
 
-![](/assets/img/post/CloudFormation/1.png)
+![](https://rainer24898.github.io/blog/assets/img/post/CloudFormation/1.png)
 
 Lưu ý khi bạn thay đổi giá trị của port thì bạn cần phải mở cổng tương ứng  tại `WebAppSecurityGroup`. Ví dụ khi bạn đổi port thành `http_port 8888` :
 

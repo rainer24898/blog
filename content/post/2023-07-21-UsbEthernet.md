@@ -1,13 +1,19 @@
 ---
 title: Usb Ethernet for Beagle Bone Black
 author: rainer
-date: "2023-07-22T01:26:00+03:00"
-categories: [Linux, Beagle Bone Black, Usb Ethernet]
-tags: [Beagle Bone Black, Usb Ethernet, Linux]
+date: '2023-07-22T01:26:00+03:00'
+categories:
+- Linux
+- Beagle Bone Black
+- Usb Ethernet
+tags:
+- Beagle Bone Black
+- Usb Ethernet
+- Linux
 math: true
 mermaid: true
 render_with_liquid: false
-image: /assets/img/post/UsbEthernet/usbheader.jpg
+image: https://rainer24898.github.io/blog/assets/img/post/UsbEthernet/usbheader.jpg
 ---
 
 # 1. Usb Ethernet là gì ?
@@ -22,7 +28,7 @@ Cách để nhận biết xem thiết bị của bạn có hỗ trợ `RNDIS` ha
 
 Từ file Reference Manual các bạn tìm tới USB Registers --> USB0_CTRL Registers --> USB0CTRL Register.
 
-![](/assets/img/post/UsbEthernet/RNDIS.png)
+![](https://rainer24898.github.io/blog/assets/img/post/UsbEthernet/RNDIS.png)
 
 Tại đây các bạn có thể tìm thấy thông tin về thanh ghi RNDIS.
 
@@ -76,7 +82,7 @@ Tại giao diện `Kernel Configuration` các bạn chọn: Device Drivers  --->
 
 Tại đây các bạn bật ( ấn y ) các lựa chọn như đã khoanh dưới đây.
 
-![](/assets/img/post/UsbEthernet/rebuild.png)
+![](https://rainer24898.github.io/blog/assets/img/post/UsbEthernet/rebuild.png)
 
 - USB Gadget Target Fabric là một thành phần của hệ thống USB Gadget trong Linux, được thiết kế để hỗ trợ việc tạo ra các "target" USB, tức các thiết bị USB ảo, trên một máy chủ Linux. `g_ether` là một module của kernel Linux cung cấp chức năng Ethernet over USB. Khi được tải vào kernel, `g_ether` tạo ra một "target" USB với chức năng Ethernet over USB.
 - USB Gadget precomposed configurations là một tính năng trong hệ thống USB Gadget của Linux cho phép bạn tạo ra và lưu trữ các cấu hình USB Gadget sẵn có. Mỗi cấu hình này bao gồm một hoặc nhiều chức năng USB cụ thể, như Ethernet over USB, mass storage, serial port, và những chức năng khác. `g_ether` là một module của kernel Linux cung cấp chức năng Ethernet over USB. Khi `g_ether` được tải vào kernel, nó tạo ra một cấu hình USB Gadget sẵn có với chức năng Ethernet over USB. Cấu hình này sau đó có thể được sử dụng bởi hệ thống USB Gadget để tạo ra một "target" USB với chức năng Ethernet over USB.
@@ -149,11 +155,11 @@ Tải file RNDIS từ trang: https://www.driverscape.com/download/usb-ethernet-r
 
 Giải nén và `install` file RNDIS. Sau khi cài xong và cắm board vào các bạn sẽ nhận được 1 cổng ethernet ảo trên windows
 
-![](/assets/img/post/UsbEthernet/RNDISEthernet.png)
+![](https://rainer24898.github.io/blog/assets/img/post/UsbEthernet/RNDISEthernet.png)
 
 Tại giao diện mạng bạn đang sử dụng ( Wifi hoặc Ethernet) --> properties --> sharing --> chọn `Allow others network user to connect though this computer` --> chọn cổng ethernet ảo đã cài.
 
-![](/assets/img/post/UsbEthernet/Sharing.png)
+![](https://rainer24898.github.io/blog/assets/img/post/UsbEthernet/Sharing.png)
 
 Tại cổng ethernet ảo đã cài các bạn set cấu hình ipv4 cho nó như sau:
 

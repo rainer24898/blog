@@ -2,7 +2,16 @@
 {{- $alt := .PlainText | default "" -}}
 {{- $title := .Title | default "" -}}
 {{- $isRemote := or (hasPrefix $src "http://") (hasPrefix $src "https://") (hasPrefix $src "//") -}}
+{{- $resolved := $src -}}
 {{- if not $isRemote -}}
-  {{- $src = $src | relURL -}}
+  {{- with .Page -}}
+    {{- with .Resources.GetMatch $src -}}
+      {{- $resolved = .RelPermalink -}}
+    {{- else -}}
+      {{- $resolved = $src | relURL -}}
+    {{- end -}}
+  {{- else -}}
+    {{- $resolved = $src | relURL -}}
+  {{- end -}}
 {{- end -}}
-<img src="{{ $src | safeURL }}" alt="{{ $alt | plainify | htmlEscape }}"{{ with $title }} title="{{ . | plainify | htmlEscape }}"{{ end }} loading="lazy" decoding="async" />
+<img src="{{ $resolved | safeURL }}" alt="{{ $alt | plainify | htmlEscape }}"{{ with $title }} title="{{ . | plainify | htmlEscape }}"{{ end }} loading="lazy" decoding="async" />
