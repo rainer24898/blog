@@ -3,6 +3,6 @@ title: Beagle Bone Black
 slug: beagle-bone-black
 description: Bài viết thuộc chuyên mục Beagle Bone Black
 style:
-    background: 'url("/img/categories/beagle-bone-black.svg") center center / cover no-repeat'
+    background: 'url("https://rainer24898.github.io/blog/img/categories/beagle-bone-black.svg") center center / cover no-repeat'
     color: '#ffffff'
 ---

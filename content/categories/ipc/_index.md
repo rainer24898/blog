@@ -3,6 +3,6 @@ title: IPC
 slug: ipc
 description: Bài viết thuộc chuyên mục IPC
 style:
-    background: 'url("/img/categories/ipc.svg") center center / cover no-repeat'
+    background: 'url("https://rainer24898.github.io/blog/img/categories/ipc.svg") center center / cover no-repeat'
     color: '#ffffff'
 ---
