@@ -7,7 +7,7 @@ tags: [Networking, Linux Driver, Linux]
 math: true
 mermaid: true
 render_with_liquid: false
-    # path: /blog/assets/img/post/UsbEthernet/usbheader.jpg
+    # path: /blog/p/assets/img/post/UsbEthernet/usbheader.jpg
 ---
 
 
@@ -19,7 +19,7 @@ render_with_liquid: false
 
 ### **1. Quy trình phân bổ bộ đệm socket (`sk_buff`)**
 
-![image.png](/blog/assets/img/post/socket_buffer_allocation/1.png)
+![image.png](/blog/p/assets/img/post/socket_buffer_allocation/1.png)
 
 Quy trình này bao gồm 3 bước chính:
 

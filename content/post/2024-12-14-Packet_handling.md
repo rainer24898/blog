@@ -7,7 +7,7 @@ tags: [Networking, Linux Driver, Linux]
 math: true
 mermaid: true
 render_with_liquid: false
-    # path: /blog/assets/img/post/UsbEthernet/usbheader.jpg
+    # path: /blog/p/assets/img/post/UsbEthernet/usbheader.jpg
 ---
 
 ### **Xử lý gói tin trong Network Interface Driver**
