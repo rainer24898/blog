@@ -19,7 +19,7 @@ render_with_liquid: false
 
 ### **1. Quy trình phân bổ bộ đệm socket (`sk_buff`)**
 
-![image.png](/blog/assets/img/post/socket_buffer_allocation/1.png)
+![image.png](img/post/socket_buffer_allocation/1.png)
 
 Quy trình này bao gồm 3 bước chính:
 
