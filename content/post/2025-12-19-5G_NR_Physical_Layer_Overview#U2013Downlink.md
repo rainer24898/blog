@@ -283,7 +283,7 @@ Beam #2 → SSB #2
 UE đo RSRP/quality của từng SSB và chọn beam mạnh nhất
 ```
 
-Chi tiết về kênh có thể đọc thêm tại: [5G NR SSB](https://rainer24898.github.io/posts/SSB/ "SSB")
+Chi tiết về kênh có thể đọc thêm tại: [5G NR SSB](https://rainer24898.github.io/blog/p/SSB/ "SSB")
 
 ---
 
@@ -638,7 +638,7 @@ Vì thế khi debug downlink, một nguyên tắc vàng là:
 
 ---
 
-Chi tiết về kênh có thể đọc thêm tại: [5G NR PDCCH](https://rainer24898.github.io/posts/PDCCH/ "PDCCH")
+Chi tiết về kênh có thể đọc thêm tại: [5G NR PDCCH](https://rainer24898.github.io/blog/p/pdcch-trong-5g-nr/ "PDCCH")
 
 ## 6. Đào sâu PDSCH processing chain
 
@@ -878,7 +878,7 @@ time-domain waveform
 
 Đây là bước tạo sóng OFDM thực sự để đưa ra RF chain.
 
-Chi tiết về kênh có thể đọc thêm tại: [5G NR PDSCH](https://rainer24898.github.io/posts/PDSCH/ "PDSCH")
+Chi tiết về kênh có thể đọc thêm tại: [5G NR PDSCH](https://rainer24898.github.io/blog/p/pdsch-trong-5g-nr/ "PDSCH")
 
 ---
 
@@ -1283,6 +1283,9 @@ Cách nhớ:
 DM-RS  → để giải kênh đang nhận ngay lúc này
 CSI-RS → để đánh giá kênh, chọn cách truyền cho tương lai gần
 ```
+
+Chi tiết về kênh có thể đọc thêm tại: [5G NR CSI](https://rainer24898.github.io/blog/p/csi-trong-5g-nr/ "CSI")
+
 
 ---
 
