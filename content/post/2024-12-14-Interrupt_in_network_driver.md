@@ -7,6 +7,7 @@ tags: [Networking, Linux Driver, Linux]
 math: true
 mermaid: true
 render_with_liquid: false
+    # path: /assets/img/post/UsbEthernet/usbheader.jpg
 ---
 
 ### **Cơ chế ngắt và cách hoạt động trong driver mạng (NIC driver)**
