@@ -1544,17 +1544,6 @@ Nếu phải tóm gọn cả bài bằng một sơ đồ duy nhất, thì có th
 
 ---
 
-## Hướng đào sâu tiếp theo
-
-Sau bài này, nên học tiếp theo thứ tự:
-
-1. **DM-RS cho PDSCH: type A, type B, additional positions, CDM groups**
-2. **DCI field-by-field: frequency assignment, time-domain assignment, RV, NDI**
-3. **TBS calculator viết bằng C để đối chiếu log scheduler**
-4. **Mapping PDCCH/PDSCH sang FAPI hoặc O-RAN L1 messages**
-5. **Log-debug guide: từ grant đến BLER root cause**
-
----
 
 ## Tóm tắt một câu
 

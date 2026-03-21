@@ -1809,27 +1809,7 @@ Không nên chỉ nhìn riêng một block.
 
 ---
 
-## 23. Gợi ý đào sâu tiếp
 
-Sau bài overview này, nên đào sâu lần lượt theo thứ tự:
-
-1. **PUSCH processing chain chi tiết**
-   TBS, MCS, RE counting, LDPC, UCI multiplexing, DMRS mapping.
-
-2. **PUCCH formats 0/1/2/3/4 chi tiết**
-   Khi nào dùng format nào, sequence, payload size, hopping.
-
-3. **PRACH chi tiết**
-   Long/short preamble, occasion, RACH procedure, TA acquisition.
-
-4. **SRS và UL channel sounding**
-   Frequency-domain sounding, beam management, UL MIMO support.
-
-5. **UL power control + timing advance**
-   Đây là phần cực kỳ quan trọng khi làm implementation, integration và field debug.
-
----
-
-## 24. Tóm tắt một câu
+## 23. Tóm tắt một câu
 
 > **5G NR uplink** là hệ thống truyền từ UE lên gNB, trong đó **PUSCH mang data**, **PUCCH mang control**, **PRACH mở cửa truy nhập**, **SRS giúp gNB hiểu kênh uplink**, còn **DMRS/PTRS** giúp thu chính xác; toàn bộ hệ thống được ràng buộc chặt bởi **power control, timing advance, waveform choice và scheduling**.
