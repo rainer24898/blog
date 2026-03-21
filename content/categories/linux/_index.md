@@ -2,7 +2,8 @@
 title: Linux
 slug: linux
 description: Bài viết thuộc chuyên mục Linux
+image: cover.svg
 style:
-    background: 'url("https://rainer24898.github.io/blog/assets/img/categories/linux.svg") center center / cover no-repeat'
-    color: '#ffffff'
+  background: '#2f855a'
+  color: '#ffffff'
 ---

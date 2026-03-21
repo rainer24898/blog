@@ -2,7 +2,8 @@
 title: C Advanced
 slug: c-advanced
 description: Bài viết thuộc chuyên mục C Advanced
+image: cover.svg
 style:
-    background: 'url("https://rainer24898.github.io/blog/assets/img/categories/c-advanced.svg") center center / cover no-repeat'
-    color: '#ffffff'
+  background: '#ea580c'
+  color: '#ffffff'
 ---

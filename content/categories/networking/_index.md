@@ -2,7 +2,8 @@
 title: Networking
 slug: networking
 description: Bài viết thuộc chuyên mục Networking
+image: cover.svg
 style:
-    background: 'url("https://rainer24898.github.io/blog/assets/img/categories/networking.svg") center center / cover no-repeat'
-    color: '#ffffff'
+  background: '#0891b2'
+  color: '#ffffff'
 ---

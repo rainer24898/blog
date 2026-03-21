@@ -2,7 +2,8 @@
 title: LED
 slug: led
 description: Bài viết thuộc chuyên mục LED
+image: cover.svg
 style:
-    background: 'url("https://rainer24898.github.io/blog/assets/img/categories/led.svg") center center / cover no-repeat'
-    color: '#ffffff'
+  background: '#eab308'
+  color: '#ffffff'
 ---

@@ -2,7 +2,8 @@
 title: Usb Ethernet
 slug: usb-ethernet
 description: Bài viết thuộc chuyên mục Usb Ethernet
+image: cover.svg
 style:
-    background: 'url("https://rainer24898.github.io/blog/assets/img/categories/usb-ethernet.svg") center center / cover no-repeat'
-    color: '#ffffff'
+  background: '#0f766e'
+  color: '#ffffff'
 ---

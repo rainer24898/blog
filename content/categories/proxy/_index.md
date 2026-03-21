@@ -2,7 +2,8 @@
 title: Proxy
 slug: proxy
 description: Bài viết thuộc chuyên mục Proxy
+image: cover.svg
 style:
-    background: 'url("https://rainer24898.github.io/blog/assets/img/categories/proxy.svg") center center / cover no-repeat'
-    color: '#ffffff'
+  background: '#64748b'
+  color: '#ffffff'
 ---

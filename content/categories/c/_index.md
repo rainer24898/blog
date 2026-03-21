@@ -2,7 +2,8 @@
 title: C
 slug: c
 description: Bài viết thuộc chuyên mục C
+image: cover.svg
 style:
-    background: 'url("https://rainer24898.github.io/blog/assets/img/categories/c.svg") center center / cover no-repeat'
-    color: '#ffffff'
+  background: '#2563eb'
+  color: '#ffffff'
 ---

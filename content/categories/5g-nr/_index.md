@@ -2,7 +2,8 @@
 title: 5G NR
 slug: 5g-nr
 description: Bài viết thuộc chuyên mục 5G NR
+image: cover.svg
 style:
-    background: 'url("https://rainer24898.github.io/blog/assets/img/categories/5g-nr.svg") center center / cover no-repeat'
-    color: '#ffffff'
+  background: '#6d5efc'
+  color: '#ffffff'
 ---

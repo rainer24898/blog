@@ -2,7 +2,8 @@
 title: Linux Programming
 slug: linux-programming
 description: Bài viết thuộc chuyên mục Linux Programming
+image: cover.svg
 style:
-    background: 'url("https://rainer24898.github.io/blog/assets/img/categories/linux-programming.svg") center center / cover no-repeat'
-    color: '#ffffff'
+  background: '#15803d'
+  color: '#ffffff'
 ---

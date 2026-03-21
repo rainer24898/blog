@@ -1,0 +1,24 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 630">
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#d1fae5"/>
+      <stop offset="100%" stop-color="#ffffff"/>
+    </linearGradient>
+    <linearGradient id="accent" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#059669" stop-opacity="0.22"/>
+      <stop offset="100%" stop-color="#059669" stop-opacity="0.08"/>
+    </linearGradient>
+  </defs>
+  <rect width="1200" height="630" fill="url(#bg)"/>
+  <circle cx="291" cy="211" r="150" fill="#059669" opacity="0.10"/>
+  <circle cx="880" cy="470" r="220" fill="#059669" opacity="0.09"/>
+  <rect x="72" y="84" width="791" height="18" rx="9" fill="#059669" opacity="0.12"/>
+  <rect x="72" y="122" width="871" height="12" rx="6" fill="#059669" opacity="0.10"/>
+  <rect x="72" y="162" width="260" height="220" rx="28" fill="url(#accent)"/>
+  <rect x="356" y="162" width="772" height="220" rx="28" fill="#059669" opacity="0.05"/>
+  <rect x="72" y="414" width="1056" height="132" rx="30" fill="#059669" opacity="0.05"/>
+  <path d="M110 210 h150 M110 250 h90 M110 290 h120 M110 330 h72" stroke="#059669" stroke-width="10" stroke-linecap="round" opacity="0.18"/>
+  <text x="390" y="250" font-family="Inter,Segoe UI,Arial,sans-serif" font-size="78" font-weight="700" fill="#059669" opacity="0.16">IPC</text>
+  <text x="390" y="314" font-family="Consolas,Menlo,monospace" font-size="28" fill="#059669" opacity="0.28">tech · systems · code</text>
+  <text x="88" y="500" font-family="Consolas,Menlo,monospace" font-size="96" font-weight="700" fill="#059669" opacity="0.20">I</text>
+</svg>

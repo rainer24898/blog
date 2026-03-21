@@ -2,7 +2,8 @@
 title: Cloud
 slug: cloud
 description: Bài viết thuộc chuyên mục Cloud
+image: cover.svg
 style:
-    background: 'url("https://rainer24898.github.io/blog/assets/img/categories/cloud.svg") center center / cover no-repeat'
-    color: '#ffffff'
+  background: '#0ea5e9'
+  color: '#ffffff'
 ---

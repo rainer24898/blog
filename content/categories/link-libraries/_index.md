@@ -2,7 +2,8 @@
 title: Link Libraries
 slug: link-libraries
 description: Bài viết thuộc chuyên mục Link Libraries
+image: cover.svg
 style:
-    background: 'url("https://rainer24898.github.io/blog/assets/img/categories/link-libraries.svg") center center / cover no-repeat'
-    color: '#ffffff'
+  background: '#6366f1'
+  color: '#ffffff'
 ---
