@@ -1,0 +1,8 @@
+{{- $src := .Destination -}}
+{{- $alt := .PlainText | default "" -}}
+{{- $title := .Title | default "" -}}
+{{- $isRemote := or (hasPrefix $src "http://") (hasPrefix $src "https://") (hasPrefix $src "//") -}}
+{{- if not $isRemote -}}
+  {{- $src = $src | relURL -}}
+{{- end -}}
+<img src="{{ $src | safeURL }}" alt="{{ $alt | plainify | htmlEscape }}"{{ with $title }} title="{{ . | plainify | htmlEscape }}"{{ end }} loading="lazy" decoding="async" />
