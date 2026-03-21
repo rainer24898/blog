@@ -23,4 +23,11 @@
     [social.params]
         icon = "brand-facebook"
 
+[[social]]
+    identifier = "email"
+    name       = "Email"
+    url        = "mailto:quoctoan24898@gmail.com"
 
+    [social.params]
+        icon = "mail"
+        newtab = true
