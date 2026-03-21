@@ -9,7 +9,7 @@ tags:
 math: true
 mermaid: true
 render_with_liquid: false
-image: "/assets/img/post/Linux_Boot/sddefault.jpg"
+image: https://rainer24898.github.io/blog/assets/img/post/Linux_Boot/sddefault.jpg
 ---
 
 # **Giới thiệu**

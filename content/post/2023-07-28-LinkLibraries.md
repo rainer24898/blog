@@ -13,7 +13,7 @@ tags:
 math: true
 mermaid: true
 render_with_liquid: false
-image: "/assets/img/post/Makefile_Lib/title.png"
+image: https://rainer24898.github.io/blog/assets/img/post/Makefile_Lib/title.png
 ---
 
 # Make file

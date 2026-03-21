@@ -9,7 +9,7 @@ tags:
 math: true
 mermaid: true
 render_with_liquid: false
-image: "/assets/img/post/Code_size_and_code_word/Best-CPU-for-Gaming.png"
+image: https://rainer24898.github.io/blog/assets/img/post/Code_size_and_code_word/Best-CPU-for-Gaming.png
 ---
 
 
