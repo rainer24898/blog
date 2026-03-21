@@ -1,14 +1,14 @@
 ---
 title: Data Structure Alignment
 author: rainer
-date: 2025-07-22 1:26:00+0300
+date: "2025-07-22T01:26:00+03:00"
 categories: [Linux]
 tags: [Linux]
 math: true
 mermaid: true
 render_with_liquid: false
-image: 
-    path: /assets/img/post/Data_structure_alignment/https___dev-to-uploads.s3.amazonaws.com_uploads_articles_cqxa5bsgv49rr3gfrztv.webp
+image: "/assets/img/post/Data_structure_alignment/https___dev-to-uploads.s3.amazonaws.com_uploads_articles_cqxa5bsgv49rr3gfrztv.webp"
+
 ---
 
 

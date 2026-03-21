@@ -1,7 +1,7 @@
 ---
 title: Usb Ethernet for Beagle Bone Black
 author: rainer
-date: 2023-07-22 1:26:00+0300
+date: "2023-07-22T01:26:00+03:00"
 categories: [Linux, Beagle Bone Black, Usb Ethernet]
 tags: [Beagle Bone Black, Usb Ethernet, Linux]
 math: true

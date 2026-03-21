@@ -1,14 +1,13 @@
 ---
 title: Linear Regression
 author: rainer
-date: 2023-07-28 1:26:00+0300
+date: "2023-07-28T01:26:00+03:00"
 categories: [AI, Machine learning]
 tags: [Machine learning, AI]
 math: true
 mermaid: true
 render_with_liquid: false
-image:
-    path: 
+
 ---
 
 

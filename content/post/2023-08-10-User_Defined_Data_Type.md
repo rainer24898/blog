@@ -1,14 +1,13 @@
 ---
 title: User defined data type 
 author: rainer
-date: 2023-08-10 1:26:00+0300
+date: "2023-08-10T01:26:00+03:00"
 categories: [C, Basic C]
 tags: [C, Basic C, IPC]
 math: true
 mermaid: true
 render_with_liquid: false
-image:
-    path:
+
 ---
 
 #  User defined data type 

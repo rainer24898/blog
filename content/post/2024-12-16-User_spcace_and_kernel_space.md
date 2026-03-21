@@ -1,13 +1,12 @@
 ---
 title: User spcace và kernel space
 author: rainer
-date: 2024-12-15 1:26:00+0300
+date: "2024-12-15T01:26:00+03:00"
 categories: [Linux, C Advanced, Linux Programming]
 tags: [Linux, C Advanced, Linux Programming]
 math: true
 mermaid: true
 render_with_liquid: false
-image: 
     # path: /assets/img/post/UsbEthernet/usbheader.jpg
 ---
 

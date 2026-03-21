@@ -1,14 +1,14 @@
 ---
 title: Linux Boot
 author: rainer
-date: 2024-07-22 1:26:00+0300
+date: "2024-07-22T01:26:00+03:00"
 categories: [Linux]
 tags: [Linux]
 math: true
 mermaid: true
 render_with_liquid: false
-image: 
-    path: /assets/img/post/Linux_Boot/sddefault.jpg
+image: "/assets/img/post/Linux_Boot/sddefault.jpg"
+
 ---
 
 # **Giới thiệu**

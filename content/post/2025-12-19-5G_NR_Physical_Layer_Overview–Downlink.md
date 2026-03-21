@@ -1,13 +1,12 @@
 ---
 title: 5G NR Physical Layer Overview – Downlink
 author: rainer
-date: 2025-07-22 1:26:00+0300
+date: "2025-07-22T01:26:00+03:00"
 categories: [5G NR]
 tags: [5G NR]
 math: true
 mermaid: true
 render_with_liquid: false
-image: 
 ---
 
 

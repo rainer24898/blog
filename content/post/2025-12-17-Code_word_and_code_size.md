@@ -1,14 +1,14 @@
 ---
 title: Word size and instruction length
 author: rainer
-date: 2025-07-22 1:26:00+0300
+date: "2025-07-22T01:26:00+03:00"
 categories: [Linux]
 tags: [Linux]
 math: true
 mermaid: true
 render_with_liquid: false
-image: 
-    path: /assets/img/post/Code_size_and_code_word/Best-CPU-for-Gaming.png
+image: "/assets/img/post/Code_size_and_code_word/Best-CPU-for-Gaming.png"
+
 ---
 
 

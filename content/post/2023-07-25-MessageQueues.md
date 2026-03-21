@@ -1,14 +1,14 @@
 ---
 title: IPC Message Queue
 author: rainer
-date: 2023-07-25 1:26:00+0300
+date: "2023-07-25T01:26:00+03:00"
 categories: [Linux, Linux Programming, IPC]
 tags: [Linux, Linux Programming, IPC]
 math: true
 mermaid: true
 render_with_liquid: false
-image:
-    path: /assets/img/post/MessageQueue/title.png
+image: "/assets/img/post/MessageQueue/title.png"
+
 ---
 
 # 1. Giới thiệu.

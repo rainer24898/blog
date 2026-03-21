@@ -1,14 +1,14 @@
 ---
 title: Link Libraries 
 author: rainer
-date: 2023-07-28 1:26:00+0300
+date: "2023-07-28T01:26:00+03:00"
 categories: [Linux, Linux Programming, Link Libraries]
 tags: [Linux, Linux Programming, Link Libraries]
 math: true
 mermaid: true
 render_with_liquid: false
-image:
-    path: /assets/img/post/Makefile_Lib/title.png
+image: "/assets/img/post/Makefile_Lib/title.png"
+
 ---
 
 # Make file

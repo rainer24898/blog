@@ -1,13 +1,12 @@
 ---
 title: Packet handling
 author: rainer
-date: 2024-12-15 1:26:00+0300
+date: "2024-12-15T01:26:00+03:00"
 categories: [Linux, Networking, Linux Driver]
 tags: [Networking, Linux Driver, Linux]
 math: true
 mermaid: true
 render_with_liquid: false
-image: 
     # path: /assets/img/post/UsbEthernet/usbheader.jpg
 ---
 

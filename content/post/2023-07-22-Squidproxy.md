@@ -1,7 +1,7 @@
 ---
 title: Set up Squid proxy server
 author: rainer
-date: 2023-07-22 1:26:00+0300
+date: "2023-07-22T01:26:00+03:00"
 categories: [Cloud, Proxy]
 tags: [Proxy Cloud]
 math: true

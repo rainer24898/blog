@@ -1,13 +1,12 @@
 ---
 title: Create Virtual Network Driver in Linux
 author: rainer
-date: 2024-12-1 1:26:00+0300
+date: "2024-12-01T01:26:00+03:00"
 categories: [Linux, Beagle Bone Black, Linux Driver]
 tags: [Beagle Bone Black, Usb Ethernet, Linux]
 math: true
 mermaid: true
 render_with_liquid: false
-image: 
     # path: /assets/img/post/UsbEthernet/usbheader.jpg
 ---
 
