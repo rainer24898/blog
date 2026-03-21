@@ -7,7 +7,7 @@ tags: [Networking, Linux Driver, Linux]
 math: true
 mermaid: true
 render_with_liquid: false
-    # path: /blog/p/assets/img/post/UsbEthernet/usbheader.jpg
+    # path: /blog/assets/img/post/UsbEthernet/usbheader.jpg
 ---
 
 ### **Chi tiết về mở và đóng giao diện mạng: `ndo_open()` và `ndo_stop()`**

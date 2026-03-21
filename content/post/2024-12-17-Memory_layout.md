@@ -7,7 +7,7 @@ tags: [C, C Advanced, Linux]
 math: true
 mermaid: true
 render_with_liquid: false
-    # path: /blog/p/assets/img/post/UsbEthernet/usbheader.jpg
+    # path: /blog/assets/img/post/UsbEthernet/usbheader.jpg
 ---
 
 # Memory layout

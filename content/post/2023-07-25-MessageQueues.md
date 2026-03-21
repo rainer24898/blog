@@ -7,7 +7,7 @@ tags: [Linux, Linux Programming, IPC]
 math: true
 mermaid: true
 render_with_liquid: false
-image: /blog/p/assets/img/post/MessageQueue/title.png
+image: /blog/assets/img/post/MessageQueue/title.png
 
 ---
 
@@ -19,13 +19,13 @@ Message Queue (Hàng đợi Message) là một cơ chế giao tiếp giữa các
 
 Tất cả các process có thể trao đổi dữ liệu thông qua việc truy cập vào cùng một queues.
 
-![Image 1](/blog/p/assets/img/post/MessageQueue/1.png) 
+![Image 1](/blog/assets/img/post/MessageQueue/1.png) 
 
-![Image 1](/blog/p/assets/img/post/MessageQueue/2.png)
+![Image 1](/blog/assets/img/post/MessageQueue/2.png)
 
 Mỗi một khối dữ liệu được truyền đi được xác định một kiểu (TYPE với `System V`, Message Priority với `POSIX` ) cụ thể và người nhận có thể nhận được các dữ liệu đó tùy theo kiểu của dữ liệu. Trong nhiều trường hợp sử dụng, điều này đem lại nhiều hiệu quả hơn thay vì phải nhận dữ liệu theo cách FIFO như cách sử dụng các pipe (đường ống).
 
-![Image 1](/blog/p/assets/img/post/MessageQueue/3.png)
+![Image 1](/blog/assets/img/post/MessageQueue/3.png)
 
 Message Queue có phần tử giới hạn và kích thước giới hạn, có thể set được kích thước cho nó. Bản chất của Message Queue sẽ có 2 trường là: Type và Message:
 - Type: Đây là một số nguyên dương đại diện cho kiểu của Message. Type cho phép các quá trình (processes) hoặc luồng (thread) nhận Message dựa trên kiểu, thay vì chỉ dựa trên thứ tự của Message trong Message Queue. Điều này cung cấp một cấp độ linh hoạt hơn trong việc xử lý Message.
@@ -68,7 +68,7 @@ Trước tiên để có thể sử dụng POSIX Message Queues cần phải kha
 ```
 mqd_t mq_open(const char *name, int oflag, mode_t mode, struct mq_attr *attr);
 ```
-![Image 1](/blog/p/assets/img/post/MessageQueue/4.png)
+![Image 1](/blog/assets/img/post/MessageQueue/4.png)
 
 Các thành phần bao gồm:
 - name: Đây là con trỏ đến chuỗi ký tự kết thúc bằng `NULL` chỉ định tên của Message Queue. Tên này phải bắt đầu bằng ký tự slash (`/`) và không chứa bất kỳ ký tự slash nào khác.
@@ -76,7 +76,7 @@ Các thành phần bao gồm:
 - mode: Nếu `O_CREAT` được chỉ định trong oflag, mode xác định quyền truy cập cho Message Queue mới (tương tự như quyền truy cập cho các tệp trong Linux, ví dụ: 0644 cho quyền đọc và viết cho chủ sở hữu, và chỉ đọc cho người dùng khác).
 - attr: Nếu `O_CREAT` được chỉ định trong oflag, attr trỏ đến một cấu trúc mq_attr mô tả thuộc tính của Message Queue mới. Nếu attr là `NULL`, Message Queue sẽ được tạo với các thuộc tính mặc định.
 
-![Image 1](/blog/p/assets/img/post/MessageQueue/5.png)
+![Image 1](/blog/assets/img/post/MessageQueue/5.png)
 
 Hàm mq_open() trả về một descriptor (kiểu mqd_t) đại diện cho Message Queue đã mở hoặc tạo. Descriptor này sau đó có thể được sử dụng với các hàm khác như mq_send(), mq_receive(), và mq_close(). Nếu có lỗi xảy ra, hàm mq_open() trả về -1 và thiết lập errno để chỉ ra lỗi cụ thể.
 
@@ -88,7 +88,7 @@ Hàm mq_open() trả về một descriptor (kiểu mqd_t) đại diện cho Mess
 int mq_send(mqd_t mqdes, const char *msg_ptr, size_t msg_len, unsigned int msg_prio);
 ```
 
-![Image 1](/blog/p/assets/img/post/MessageQueue/6.png)
+![Image 1](/blog/assets/img/post/MessageQueue/6.png)
 
 Các thành phần của hàm này bao gồm:
 - mqdes: Đây là một descriptor cho Message Queue mà bạn muốn gửi Message. Descriptor này thường được trả về bởi hàm mq_open().
@@ -106,7 +106,7 @@ Hàm mq_send() trả về 0 nếu thành công, và -1 nếu có lỗi xảy ra.
 ssize_t mq_receive(mqd_t mqdes, char *msg_ptr, size_t msg_len, unsigned int *msg_prio);
 ```
 
-![Image 1](/blog/p/assets/img/post/MessageQueue/7.png)
+![Image 1](/blog/assets/img/post/MessageQueue/7.png)
 
 Các thành phần của hàm này bao gồm:
 - mqdes: Đây là một descriptor cho Message Queue mà bạn muốn nhận Message từ. Descriptor này thường được trả về bởi hàm mq_open().
@@ -123,7 +123,7 @@ Hàm mq_receive() trả về số byte trong Message nhận được nếu thàn
 ```
 int mq_close(mqd_t mqdes);
 ```
-![Image 1](/blog/p/assets/img/post/MessageQueue/8.png)
+![Image 1](/blog/assets/img/post/MessageQueue/8.png)
 
 - mqdes: Đây là một descriptor cho Message Queue mà bạn muốn đóng. Descriptor này thường được trả về bởi hàm mq_open()
 

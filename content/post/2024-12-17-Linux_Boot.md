@@ -7,7 +7,7 @@ tags: [Linux]
 math: true
 mermaid: true
 render_with_liquid: false
-image: /blog/p/assets/img/post/Linux_Boot/sddefault.jpg
+image: /blog/assets/img/post/Linux_Boot/sddefault.jpg
 
 ---
 
@@ -68,11 +68,11 @@ Do bộ nhớ của boot rom khá nhỏ nên rom code cũng được giớ
 
 Lấy ví dụ load lên từ SDcard:
 
-![Image 1](/blog/p/assets/img/post/Linux_Boot/f0f60878-d6ad-4b8c-b2a8-ca21387e29b6.webp)
+![Image 1](/blog/assets/img/post/Linux_Boot/f0f60878-d6ad-4b8c-b2a8-ca21387e29b6.webp)
 
 Rom code lựa chọn boot device (load từ thẻ nhớ, flash vv..) phụ thuộc vào việc cấu các pin thông qua switch/jump trên phần cứng.
 
-![Image 1](/blog/p/assets/img/post/Linux_Boot/cf1d8071-6663-42d6-b3f2-b14949dd32bc.webp)
+![Image 1](/blog/assets/img/post/Linux_Boot/cf1d8071-6663-42d6-b3f2-b14949dd32bc.webp)
 
 
 ## **Second Program Loader (SPL)**
@@ -81,7 +81,7 @@ SPL - chương trình tải phụ. Nhiệm vụ chính của SPL đó chính là
 
 - Hay nói ngắn gọn. Chức năng chính của SPL là để load được U-boot lên RAM.
 
-![Image 1](/blog/p/assets/img/post/Linux_Boot/253acfa0-6004-4e9c-ae3e-817bbd741315.webp)
+![Image 1](/blog/assets/img/post/Linux_Boot/253acfa0-6004-4e9c-ae3e-817bbd741315.webp)
     
     
 
@@ -95,11 +95,11 @@ Lúc này u-boot sẽ kiểm tra xem file **uEnv.txt** có tồn tại ha
 
 Bản thân uEnv.txt là một bootscript, nó định nghĩa các tham số cấu hình, kernel parameters. Các tham số này mặc định đã được cấu hình trong u-boot. Tuy nhiên chúng ta có thể thêm, sửa, xóa các cấu hình này thông qua file uEnv.txt. Việc load uEnv.txt là một sự tùy chọn ( **Optional** ), nghĩa là nó có thể có hoặc không.
 
-![Image 1](/blog/p/assets/img/post/Linux_Boot/772be7cc-05ae-422a-810b-5bac042a171a.webp)
+![Image 1](/blog/assets/img/post/Linux_Boot/772be7cc-05ae-422a-810b-5bac042a171a.webp)
 
 Tiếp theo u-boot sẽ tiếp tục load kernel, device tree vào RAM tại các địa chỉ mà đã được cấu hình từ trước ở trong mã nguồn u-boot hoặc trong file uEnv.txt. Sau cùng nó sẽ truyền toàn bộ kernel parameters và nhường quyền thực thi lại cho kernel.
 
-![Image 1](/blog/p/assets/img/post/Linux_Boot/eef3c97e-b9d1-4957-b8f0-c12232e66ab9.webp)
+![Image 1](/blog/assets/img/post/Linux_Boot/eef3c97e-b9d1-4957-b8f0-c12232e66ab9.webp)
 
 **Đến đây ta có thể đặt ra một số câu hỏi:**
 
@@ -121,7 +121,7 @@ Tiếp theo u-boot sẽ tiếp tục load kernel, device tree vào RAM tại 
 
 Sử dụng lệnh ***bdinfo*** trong trong ***u-boot command line*** ta có được các thông tin dưới đây:
 
-![Image 1](/blog/p/assets/img/post/Linux_Boot/8f4047be-1b02-49e6-abc4-529a1bcef910.webp)
+![Image 1](/blog/assets/img/post/Linux_Boot/8f4047be-1b02-49e6-abc4-529a1bcef910.webp)
 
 Như vậy, sau khi được load tới một địa chỉ thấp trên RAM u-boot u-boot sẽ được relocation tới địa chỉ relocaddr (0xDFF5D000).
 
@@ -133,7 +133,7 @@ Như vậy, sau khi được load tới một địa chỉ thấp trên RAM
 
 Sau khi nhận được quyền kiểm soát và các kernel parameters từ u-boot. Kernel sẽ thực hiện mount hệ thống file system (**Rootfs**) và cho chạy tiến trình ***Init*** trên RAM. Đây là tiến trình được chạy đầu tiên khi hệ thống khởi động thành công và chạy cho tới khi hệ thống kết thúc. Tiến trình ***Init*** sẽ khởi tạo toàn bộ các tiến trình con khác trên user space, các applications tương tác trực tiếp với người dùng. Lúc này, hệ thống của chúng ta đã hoàn toàn sẵn sàng cho việc sử dụng.
 
-![Image 1](/blog/p/assets/img/post/Linux_Boot/fb107ebd-cfd9-4c67-a709-5214996af665.webp)
+![Image 1](/blog/assets/img/post/Linux_Boot/fb107ebd-cfd9-4c67-a709-5214996af665.webp)
 
 # **Kết Luận**
 
