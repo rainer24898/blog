@@ -9,6 +9,8 @@ tags:
 math: true
 mermaid: true
 render_with_liquid: false
+image: https://rainer24898.github.io/blog/assets/img/post/speaking_english/ccv.png
+
 ---
 
 
@@ -53,6 +55,7 @@ Bạn là **L1 software engineer**. Team đang gặp lỗi ở hệ thống 5G:
 <audio controls>
   <source src="https://rainer24898.github.io/blog/assets/audio/post/speak_english/1.wav" type="audio/mpeg">
 </audio>
+
 **Manager:** Good morning, everyone. Let’s start with the uplink issue reported by the integration team. Toan, could you give us an update from the Layer 1 side?
 
 **Engineer (You):** Sure. I checked the logs from both the scheduler interface and the Layer 1 processing path. At a high level, the UL grant is sent by L2 on time, and Layer 1 also receives the request within the expected slot boundary. But the problem is that the uplink decoding result is not stable. In some slots, the PUSCH is decoded successfully, while in other slots, the CRC fails even though the radio condition appears similar.
@@ -212,6 +215,10 @@ Bạn đang trao đổi 1-1 với kiến trúc sư nước ngoài. Chủ đề �
 ---
 
 ## Hội thoại tiếng Anh
+
+<audio controls>
+  <source src="https://rainer24898.github.io/blog/assets/audio/post/speak_english/2.wav" type="audio/mpeg">
+</audio>
 
 **Architect:** I read your earlier note. You mentioned that the issue may not be in the scheduler message itself, but in the Layer 1 execution timing. Can you explain that in more detail?
 
