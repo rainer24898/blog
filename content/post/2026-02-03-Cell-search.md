@@ -82,7 +82,7 @@ Về miền tần số, **PSS** là chuỗi **Zadoff–Chu** với **3 root inde
 Bảng sau tổng hợp các tín hiệu và khối thông tin quan trọng nhất trong Cell Search LTE.
 
 | Đối tượng | Vai trò chính | Vị trí/thời lượng cốt lõi | UE lấy được gì | Bước xử lý đầu tiên điển hình |
-|---|---|---|---|---|---|
+|---|---|---|---|---|
 | **PSS** | Đồng bộ thô và tìm \(N_{ID}^{(2)}\) | 62 subcarrier quanh DC; FDD: symbol cuối slot 0 và 10; TDD: symbol thứ ba subframe 1 và 6 | Timing thô, 1 trong 3 identity trong nhóm | Tương quan trượt miền thời gian |
 | **SSS** | Suy ra \(N_{ID}^{(1)}\), frame/half-frame timing | 62 phần tử từ hai chuỗi dài 31; FDD: ngay trước PSS; TDD: ở slot 1 và 11, sớm hơn PSS ba symbol | Nhóm cell ID, phân biệt nửa khung | FFT rồi correlation miền tần số |
 | **PCI** | Nhận dạng cell vật lý | Không phải tín hiệu riêng; \(N_{ID}^{cell}=3N_{ID}^{(1)}+N_{ID}^{(2)}\), miền giá trị 0…503 | PhysCellId để đo lường, báo cáo, HO, re-establishment | Kết hợp kết quả PSS và SSS |
@@ -174,10 +174,10 @@ Một chi tiết tinh tế là trong IE **ReportConfigEUTRA** cơ sở, **trigge
 
 Bảng dưới đây tóm tắt sự khác nhau giữa đánh giá cell trong idle và báo cáo/handover trong connected.
 
-| Ngữ cảnh | Đại lượng chính | Tham số/threshold chính | Chống dao động | Hàm ý thực tế | Nguồn |
-|---|---|---|---|---|---|
-| **RRC_IDLE: cell selection/reselection** | RSRP, RSRQ qua \(S_{rxlev}\), \(S_{qual}\) | q-RxLevMin, q-RxLevMinOffset trong SIB1; q-Hyst, threshServingLow, s-IntraSearch, t-ReselectionEUTRA trong SIB3; q-OffsetCell/blacklist trong SIB4 | q-Hyst, t-ReselectionEUTRA, offset theo cell | Quyết định camp/reselect |  |
-| **RRC_CONNECTED: measurement/handover** | RSRP hoặc RSRQ là triggerQuantity cơ sở; RS-SINR là đo L1 bổ trợ | A3/A4/A5 thresholds, a3-Offset, hysteresis, timeToTrigger | Hysteresis (0.5 dB step), TTT 0…5120 ms | Kích hoạt MeasurementReport, từ đó dẫn tới HO logic |  |
+| Ngữ cảnh | Đại lượng chính | Tham số/threshold chính | Chống dao động | Hàm ý thực tế |
+|---|---|---|---|---|
+| **RRC_IDLE: cell selection/reselection** | RSRP, RSRQ qua \(S_{rxlev}\), \(S_{qual}\) | q-RxLevMin, q-RxLevMinOffset trong SIB1; q-Hyst, threshServingLow, s-IntraSearch, t-ReselectionEUTRA trong SIB3; q-OffsetCell/blacklist trong SIB4 | q-Hyst, t-ReselectionEUTRA, offset theo cell | Quyết định camp/reselect |
+| **RRC_CONNECTED: measurement/handover** | RSRP hoặc RSRQ là triggerQuantity cơ sở; RS-SINR là đo L1 bổ trợ | A3/A4/A5 thresholds, a3-Offset, hysteresis, timeToTrigger | Hysteresis (0.5 dB step), TTT 0…5120 ms | Kích hoạt MeasurementReport, từ đó dẫn tới HO logic |
 
 ## Ví dụ tính toán và diễn giải thực tế
 
