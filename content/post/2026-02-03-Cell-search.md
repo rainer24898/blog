@@ -1,5 +1,5 @@
 ---
-title: FirstNet
+title: Cell Search
 author: rainer
 date: '2026-01-06T01:26:00+03:00'
 categories:
@@ -59,13 +59,13 @@ Sơ đồ trạng thái dưới đây cho thấy quan hệ giữa Cell Search, c
 
 ```mermaid
 stateDiagram-v2
-    [*] --> ChuaDongBo
-    ChuaDongBo --> DongBoTho: PSS được phát hiện
-    DongBoTho --> DongBoKhung: SSS + CFO correction
-    DongBoKhung --> GiaiPBCH: PCI xác định, OFDM demod
-    GiaiPBCH --> CoMIB: BCH/PBCH decode thành công
-    CoMIB --> CoSIB1: Thu SIB1
-    CoSIB1 --> Camped: TIêu chí cell selection thỏa
+    [*] --> Chưa đồng bộ
+    Chưa đồng bộ --> Đồng bộ thô: PSS được phát hiện
+    Đồng bộ thô --> Đồng bộ khung: SSS + CFO correction
+    Đồng bộ thô --> Giải PBCH: PCI xác định, OFDM demod
+    Giải PBCH --> Có MIB: BCH/PBCH decode thành công
+    Có MIB --> Có SIB1: Thu SIB1(có thể có cả SIB2)
+    Có SIB1 --> Camped: TIêu chí cell selection thỏa
     Camped --> RRC_CONNECTED: Thiết lập kết nối RRC
     Camped --> Camped: Cell reselection trong idle
     RRC_CONNECTED --> RRC_CONNECTED: Measurement / A3-A4-A5
@@ -81,16 +81,16 @@ Về miền tần số, **PSS** là chuỗi **Zadoff–Chu** với **3 root inde
 
 Bảng sau tổng hợp các tín hiệu và khối thông tin quan trọng nhất trong Cell Search LTE.
 
-| Đối tượng | Vai trò chính | Vị trí/thời lượng cốt lõi | UE lấy được gì | Bước xử lý đầu tiên điển hình | Nguồn |
+| Đối tượng | Vai trò chính | Vị trí/thời lượng cốt lõi | UE lấy được gì | Bước xử lý đầu tiên điển hình |
 |---|---|---|---|---|---|
-| **PSS** | Đồng bộ thô và tìm \(N_{ID}^{(2)}\) | 62 subcarrier quanh DC; FDD: symbol cuối slot 0 và 10; TDD: symbol thứ ba subframe 1 và 6 | Timing thô, 1 trong 3 identity trong nhóm | Tương quan trượt miền thời gian |  |
-| **SSS** | Suy ra \(N_{ID}^{(1)}\), frame/half-frame timing | 62 phần tử từ hai chuỗi dài 31; FDD: ngay trước PSS; TDD: ở slot 1 và 11, sớm hơn PSS ba symbol | Nhóm cell ID, phân biệt nửa khung | FFT rồi correlation miền tần số |  |
-| **PCI** | Nhận dạng cell vật lý | Không phải tín hiệu riêng; \(N_{ID}^{cell}=3N_{ID}^{(1)}+N_{ID}^{(2)}\), miền giá trị 0…503 | PhysCellId để đo lường, báo cáo, HO, re-establishment | Kết hợp kết quả PSS và SSS |  |
-| **PBCH/BCH** | Mang thông tin quảng bá tối thiểu | Slot 1, subframe 0; 72 subcarrier trung tâm; 4 OFDM symbol đầu; BCH TTI 40 ms | Bản tin BCH đã mã hóa, số anten tham chiếu qua CRC mask | OFDM demod, channel estimate, PBCH decode |  |
-| **MIB** | Cấu hình hệ thống tối thiểu | Có trong BCH/PBCH; trong R15 ASN.1 gồm dl-Bandwidth, phich-Config, systemFrameNumber và các trường BR bổ sung | NDLRB, PHICH, 8 MSB của SFN; 2 LSB của SFN suy ra từ timing PBCH | Parse MIB sau PBCH decode |  |
-| **SIB1** | Cho biết cell access và lịch SI khác | Chu kỳ 80 ms; phát đầu ở subframe 5 khi SFN mod 8 = 0; lặp ở subframe 5 của các frame chẵn | PLMN, TAC, CellIdentity, cellBarred, q-RxLevMin, schedulingInfoList, si-WindowLength | PDCCH blind search + PDSCH/DL-SCH decode |  |
-| **SIB2** | Cấu hình vô tuyến chung cho mọi UE | Nằm trong SI message đầu tiên của schedulingInfoList | ac-barring, radioResourceConfigCommon, UE timers/constants, freqInfo, timeAlignmentTimerCommon | Theo lịch SI sau khi có SIB1 | |
-| **SIB3/SIB4** | Reselection intra-frequency và láng giềng/blacklist | Theo lịch SI từ SIB1 | q-Hyst, threshServingLow, cellReselectionPriority, s-IntraSearch, t-ReselectionEUTRA; intraFreqNeighCellList, intraFreqBlackCellList | Đọc khi cần công thức reselection hoàn chỉnh | |
+| **PSS** | Đồng bộ thô và tìm \(N_{ID}^{(2)}\) | 62 subcarrier quanh DC; FDD: symbol cuối slot 0 và 10; TDD: symbol thứ ba subframe 1 và 6 | Timing thô, 1 trong 3 identity trong nhóm | Tương quan trượt miền thời gian |
+| **SSS** | Suy ra \(N_{ID}^{(1)}\), frame/half-frame timing | 62 phần tử từ hai chuỗi dài 31; FDD: ngay trước PSS; TDD: ở slot 1 và 11, sớm hơn PSS ba symbol | Nhóm cell ID, phân biệt nửa khung | FFT rồi correlation miền tần số |
+| **PCI** | Nhận dạng cell vật lý | Không phải tín hiệu riêng; \(N_{ID}^{cell}=3N_{ID}^{(1)}+N_{ID}^{(2)}\), miền giá trị 0…503 | PhysCellId để đo lường, báo cáo, HO, re-establishment | Kết hợp kết quả PSS và SSS |
+| **PBCH/BCH** | Mang thông tin quảng bá tối thiểu | Slot 1, subframe 0; 72 subcarrier trung tâm; 4 OFDM symbol đầu; BCH TTI 40 ms | Bản tin BCH đã mã hóa, số anten tham chiếu qua CRC mask | OFDM demod, channel estimate, PBCH decode |
+| **MIB** | Cấu hình hệ thống tối thiểu | Có trong BCH/PBCH; trong R15 ASN.1 gồm dl-Bandwidth, phich-Config, systemFrameNumber và các trường BR bổ sung | NDLRB, PHICH, 8 MSB của SFN; 2 LSB của SFN suy ra từ timing PBCH | Parse MIB sau PBCH decode |
+| **SIB1** | Cho biết cell access và lịch SI khác | Chu kỳ 80 ms; phát đầu ở subframe 5 khi SFN mod 8 = 0; lặp ở subframe 5 của các frame chẵn | PLMN, TAC, CellIdentity, cellBarred, q-RxLevMin, schedulingInfoList, si-WindowLength | PDCCH blind search + PDSCH/DL-SCH decode |
+| **SIB2** | Cấu hình vô tuyến chung cho mọi UE | Nằm trong SI message đầu tiên của schedulingInfoList | ac-barring, radioResourceConfigCommon, UE timers/constants, freqInfo, timeAlignmentTimerCommon | Theo lịch SI sau khi có SIB1 |
+| **SIB3/SIB4** | Reselection intra-frequency và láng giềng/blacklist | Theo lịch SI từ SIB1 | q-Hyst, threshServingLow, cellReselectionPriority, s-IntraSearch, t-ReselectionEUTRA; intraFreqNeighCellList, intraFreqBlackCellList | Đọc khi cần công thức reselection hoàn chỉnh |
 
 Một quan hệ thời gian rất quan trọng nhưng thường bị bỏ sót là: trong **FDD**, sau cặp **SSS→PSS** ở cuối **slot 0** của **subframe 0**, **PBCH** xuất hiện **ngay trong slot kế tiếp** của cùng subframe; còn cặp **SSS→PSS** ở **subframe 5** thì **không** đi kèm PBCH gần như lập tức. Vì vậy, bộ thu có thể dùng tổ hợp SSS, timing và PBCH để khóa chính xác frame timing thay vì chỉ dừng ở mức 5 ms. Đồng thời, vì PBCH trải trên 40 ms còn SIB1 theo chu kỳ 80 ms với các repetition trên frame chẵn, độ trễ tìm cell hoàn chỉnh trong thực tế không chỉ phụ thuộc bước tương quan PSS/SSS mà còn phụ thuộc “thời điểm UE rơi vào lịch phát” của PBCH và SIB1. 
 
@@ -111,6 +111,8 @@ flowchart LR
       SF9["Subframe 9"]
     end
 ```
+
+![](https://rainer24898.github.io/blog/assets/img/post/Cell_search/Picture1.png)
 
 ## Thuật toán phát hiện, tương quan, đồng bộ và suy diễn PCI
 
