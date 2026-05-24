@@ -15,7 +15,6 @@ image: https://rainer24898.github.io/blog/assets/img/post/Cell_search/LTE-Cell-S
 
 # Cell Search trong LTE
 
-## Tóm tắt điều hành
 
 Trong LTE, **Cell Search** là chuỗi thủ tục mà UE dùng để tìm thấy một cell, đồng bộ thời gian và tần số với cell đó, xác định **Physical Cell Identity** (PCI), giải mã **PBCH/BCH** để lấy **MIB**, rồi tiếp tục thu **SIB1** và các **SIB** liên quan để có thể **camp** lên cell trong RRC_IDLE hoặc tiến tới thiết lập kết nối RRC. Chuẩn 3GPP quy định rất chặt chẽ cấu trúc tín hiệu, vị trí thời gian–tần số, nội dung bản tin quảng bá và các tiêu chí đo lường; tuy nhiên, chuẩn **không áp đặt một thuật toán thu duy nhất**, nên các bộ thu thực tế thường dùng các kỹ thuật tương quan, ước lượng lệch tần số và đồng bộ OFDM “điển hình” nhưng không phải là phần bắt buộc theo kiểu một thuật toán chuẩn hóa duy nhất.
 
