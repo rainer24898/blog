@@ -1,0 +1,7 @@
+[pagination]
+    jumpToPage = "Chuyển đến trang"
+    jump = "Đi"
+    pressEnter = "Nhấn Enter để chuyển trang"
+
+[widget.categoriesCloud]
+    title = "Chủ đề"

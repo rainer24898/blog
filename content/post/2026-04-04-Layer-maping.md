@@ -1,5 +1,7 @@
 ---
-title: Layer mapping
+title: Layer Mapping trong LTE — Tài liệu giải thích bản chất kèm hình vẽ
+slug: layer-mapping
+description: "Cách PHY LTE sắp xếp modulation symbols từ codeword vào các spatial layer trước precoding, với ví dụ cho một và hai codeword."
 author: rainer
 date: '2026-02-06T01:26:00+03:00'
 categories:
@@ -12,7 +14,9 @@ render_with_liquid: false
 image: https://rainer24898.github.io/blog/assets/img/post/Layer_mapping/images.png
 ---
 
-# Layer Mapping trong LTE — Tài liệu giải thích bản chất kèm hình vẽ
+<span id="layer-mapping-trong-lte--tài-liệu-giải-thích-bản-chất-kèm-hình-vẽ"></span>
+
+## Vị trí của layer mapping trong LTE downlink
 
 Layer mapping trong LTE là một bước nhỏ trong PHY layer, nhưng nếu hiểu sai bước này thì rất dễ nhầm toàn bộ phần MIMO. Nhiều người mới học LTE thường nghĩ rằng “layer” chính là “anten”, hoặc “2 codeword nghĩa là 2 layer”, hoặc “layer mapping chính là precoding”. Những cách hiểu đó đều chưa chính xác.
 
@@ -155,6 +159,10 @@ x(l)(i): symbol của layer l
 y(p)(i): symbol trên antenna port p
 ```
 
+## Mapping một codeword
+
+### Một spatial layer
+
 Bây giờ xét một trường hợp đơn giản nhất: LTE chỉ truyền một layer. Khi chỉ có một layer, layer mapping gần như là truyền thẳng symbol từ codeword vào layer.
 
 Nếu codeword 0 là:
@@ -184,6 +192,8 @@ flowchart LR
 ```
 
 Trong trường hợp này, layer mapping chưa thể hiện rõ vai trò của nó, vì dữ liệu chỉ đi vào một layer duy nhất. Vai trò của layer mapping trở nên rõ hơn khi LTE dùng MIMO spatial multiplexing.
+
+### Hai spatial layer
 
 Giả sử LTE muốn truyền rank 2, tức là truyền 2 spatial layers. Khi đó, dữ liệu cần được chia thành hai layer để tại mỗi thời điểm xử lý, precoder nhận được một vector gồm 2 symbol.
 
@@ -256,6 +266,8 @@ x(i) = [x(0)(i), x(1)(i), ..., x(υ-1)(i)]T
 ```
 
 Vector này là đầu vào của precoder.
+
+## Từ spatial layer đến antenna port
 
 Sau layer mapping, precoding sẽ nhân vector layer với ma trận precoding `W`.
 
@@ -335,6 +347,8 @@ Antenna port: cổng phát logic sau precoding.
 
 Nếu gộp ba khái niệm này lại, ta sẽ rất dễ hiểu sai MIMO trong LTE.
 
+## Mapping hai codeword
+
 Một điểm khác cũng rất quan trọng: **số codeword không nhất thiết bằng số layer**. LTE downlink spatial multiplexing thường có tối đa 2 codeword, nhưng số layer có thể lớn hơn 2. Vì vậy mới có các trường hợp như:
 
 ```text id="rhq61f"
@@ -344,6 +358,8 @@ Một điểm khác cũng rất quan trọng: **số codeword không nhất thi�
 2 codewords → 3 layers
 2 codewords → 4 layers
 ```
+
+### Hai codeword lên hai layer
 
 Trường hợp 2 codeword mapping lên 2 layer là trường hợp dễ hiểu nhất.
 
@@ -383,6 +399,8 @@ i = 1: [a1, b1]T
 i = 2: [a2, b2]T
 i = 3: [a3, b3]T
 ```
+
+### Hai codeword lên bốn layer
 
 Còn nếu 2 codeword mapping lên 4 layer, mỗi codeword sẽ được chia lên 2 layer.
 
@@ -477,6 +495,8 @@ flowchart LR
     W --> Y["Antenna-port vector y(i)<br/>[y0, y1, y2, y3]ᵀ"]
 ```
 
+## Mô hình tín hiệu MIMO
+
 Nếu nhìn theo mô hình truyền MIMO, tín hiệu UE nhận được có thể hình dung như:
 
 ```text id="6b1bpb"
@@ -506,6 +526,8 @@ flowchart LR
 Từ mô hình này có thể thấy layer mapping tạo ra `x`. Nếu `x` sai, toàn bộ phía sau dù tính toán đúng vẫn xử lý sai dữ liệu. Precoder có thể nhân ma trận đúng, resource mapping có thể đúng, OFDM có thể đúng, nhưng UE sẽ nhận tín hiệu không khớp với giả định giải mã.
 
 Đây là lý do trong implement LTE PHY, layer mapping tuy nhìn đơn giản nhưng rất quan trọng. Nó là bước tổ chức buffer giữa modulation và precoding. Nếu mapping lệch index, đảo layer, hoặc sai số symbol trên mỗi layer, lỗi có thể xuất hiện dưới dạng BLER cao, HARQ NACK nhiều, hoặc UE không decode được PDSCH.
+
+## Triển khai layer mapping theo modulo
 
 Về mặt implement, nếu một codeword được chia lên `L` layer, mapping có thể hiểu bằng phép modulo.
 
@@ -577,6 +599,8 @@ linear combination / spatial weighting
 
 Nếu sau layer mapping mà symbol bị thay đổi giá trị, có thể bạn đang xem nhầm buffer sau precoding hoặc sau một bước xử lý khác.
 
+## Spatial multiplexing và transmit diversity
+
 Cũng cần phân biệt spatial multiplexing và transmit diversity.
 
 Trong spatial multiplexing, mục tiêu là tăng throughput bằng cách truyền nhiều layer độc lập song song. Khi điều kiện kênh tốt, UE có thể tách được nhiều layer, eNodeB có thể truyền rank cao hơn.
@@ -600,6 +624,8 @@ flowchart TB
     C --> C2[Dùng diversity qua antenna ports]
     C --> C3[Phù hợp khi cần link ổn định]
 ```
+
+## Rank và phản hồi CSI
 
 Trong LTE, UE thường báo về các thông tin như RI, PMI và CQI.
 
@@ -638,6 +664,8 @@ flowchart LR
 ```
 
 Nếu kênh tốt và các đường không gian đủ độc lập, rank cao có thể giúp tăng throughput. Nếu kênh xấu hoặc tương quan anten cao, dùng nhiều layer có thể làm UE khó tách tín hiệu, dẫn đến BLER tăng. Vì vậy layer mapping không thể tách rời khỏi toàn bộ quyết định MIMO của scheduler.
+
+## Kiểm tra khi debug PHY
 
 Khi debug hoặc implement, có bốn câu hỏi rất quan trọng:
 
@@ -696,6 +724,8 @@ b1 b3 b5 ... b1199
 ```
 
 Nếu debug thấy layer 0 nhận toàn bộ codeword 0 còn layer 1 trống, hoặc layer 2 nhận nhầm symbol của codeword 0, thì khả năng cao lỗi nằm ở phần layer mapping hoặc phần tính toán số layer/codeword trước đó.
+
+## Tóm tắt
 
 Tóm lại, layer mapping trong LTE cần được hiểu như một bước chuyển đổi miền dữ liệu.
 

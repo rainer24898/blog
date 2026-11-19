@@ -1,0 +1,52 @@
+{{/* Adapted from Hugo Theme Stack v4.0.3, Jimmy Cai and contributors, GPL-3.0. */}}
+{{ define "body-class" }}
+    article-page
+    {{- $tocWidget := false -}}
+    {{- $otherWidget := false -}}
+    {{- range .Site.Params.widgets.page -}}
+        {{- if eq .type "toc" -}}
+            {{- $tocWidget = true -}}
+        {{- else -}}
+            {{- $otherWidget = true -}}
+        {{- end -}}
+    {{- end -}}
+
+    {{- $toc := .TableOfContents -}}
+    {{- if where .Fragments.Headings "Level" 1 -}}
+        {{- /* Legacy articles use Markdown H1 for sections rendered as H2. */ -}}
+        {{- $toc = .Fragments.ToHTML 1 3 true -}}
+    {{- end -}}
+    {{- $showTOC := .Site.Params.article.toc -}}
+    {{- if isset .Params "toc" -}}
+        {{- $showTOC = .Params.toc -}}
+    {{- end -}}
+    {{- $hasTOC := and $showTOC $tocWidget (ge (len (findRE `<a ` $toc)) 2) -}}
+    {{- .Scratch.Set "articleTOC" $toc -}}
+    {{- .Scratch.Set "TOCEnabled" $hasTOC -}}
+    {{- .Scratch.Set "hasWidget" (or $otherWidget $hasTOC) -}}
+{{ end }}
+
+{{ define "main" }}
+    {{ partial "article/article.html" . }}
+
+    {{ if .Params.links }}
+        {{ partial "article/components/links" . }}
+    {{ end }}
+
+    {{ partial "article/components/related-content" . }}
+
+    {{ if not (eq .Params.comments false) }}
+        {{ partial "comments/include" . }}
+    {{ end }}
+
+    {{ partialCached "footer/footer" . }}
+
+    {{ partialCached "article/components/photoswipe" . }}
+    {{ partial "article/components/mermaid" . }}
+{{ end }}
+
+{{ define "right-sidebar" }}
+    {{ if .Scratch.Get "hasWidget" }}
+        {{ partial "sidebar/right.html" (dict "Context" . "Scope" "page") }}
+    {{ end }}
+{{ end }}

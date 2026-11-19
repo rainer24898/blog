@@ -1,0 +1,11 @@
+{{- $level := .Level -}}
+{{- if and .Page.IsPage (where .Page.Fragments.Headings "Level" 1) -}}
+    {{- $level = math.Min 6 (add $level 1) -}}
+{{- end -}}
+<h{{ $level }} id="{{ .Anchor }}"{{ with .Attributes.class }} class="{{ . }}"{{ end }}>
+    {{- if and site.Params.Article.HeadingAnchor .Page.IsPage -}}
+        {{- $label := cond (eq .Page.Language.Lang "vi") "Liên kết đến mục" "Link to section" -}}
+        <a href="#{{ .Anchor }}" class="header-anchor" aria-label="{{ $label }}: {{ .PlainText }}"></a>
+    {{- end -}}
+    {{- .Text -}}
+</h{{ $level }}>

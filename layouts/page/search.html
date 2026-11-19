@@ -1,0 +1,24 @@
+{{ define "body-class" }}template-search{{ end }}
+
+{{ define "main" }}
+    <header class="blog-search-header">
+        <h1>Tìm kiếm</h1>
+        {{ partial "blog/search-form.html" (dict "page" . "id" "post-search" "results" true) }}
+    </header>
+
+    <div class="blog-search-results">
+        <p class="search-status" role="status"></p>
+        <div class="article-list--compact" id="search-results"></div>
+    </div>
+
+    <noscript>
+        <p>Bật JavaScript để tìm kiếm toàn văn.
+            {{ with site.GetPage "/page/archives" }}Bạn cũng có thể <a href="{{ .RelPermalink }}">xem các bài trong mục Lưu trữ</a>.{{ end }}
+        </p>
+    </noscript>
+
+    {{ $script := resources.Get "js/post-search.js" | js.Build (dict "minify" hugo.IsProduction) | fingerprint }}
+    <script src="{{ $script.RelPermalink }}" defer></script>
+
+    {{ partialCached "footer/footer" . }}
+{{ end }}

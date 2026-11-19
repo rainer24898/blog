@@ -1,0 +1,9 @@
+<form action="{{ .page.RelPermalink }}" class="search-form blog-search-form" role="search"{{ if .results }}{{ with .page.OutputFormats.Get "json" }} data-json="{{ .RelPermalink }}"{{ end }}{{ end }}>
+    <p>
+        <label for="{{ .id }}">Tìm bài viết</label>
+        <input id="{{ .id }}" name="keyword" type="search" placeholder="MIMO, PDSCH, Linux" maxlength="160">
+    </p>
+    <button type="submit" aria-label="Tìm kiếm">
+        {{ partial "helper/icon" "search" }}
+    </button>
+</form>

@@ -1,3 +1,112 @@
-/*
-    You can add your own custom styles here.
-*/
+@use "reading";
+
+.blog-intro {
+    padding: clamp(2rem, 4vw, 4rem);
+    border-radius: var(--card-border-radius);
+    border: 1px solid var(--card-separator-color);
+    background: var(--card-background);
+    color: var(--card-text-color-main);
+    box-shadow: var(--shadow-l1);
+}
+
+.blog-intro h1,
+.blog-search-header h1 {
+    margin: 0;
+    color: var(--card-text-color-main);
+    font-size: clamp(2.7rem, 4vw, 4rem);
+    line-height: 1.2;
+}
+
+.blog-intro > p {
+    max-width: 58ch;
+    margin-block: 1.2rem 2rem;
+    color: var(--card-text-color-secondary);
+    font-size: 1.7rem;
+    line-height: 1.6;
+}
+
+.blog-topics {
+    display: flex;
+    flex-wrap: wrap;
+    gap: .8rem;
+    margin-block-start: 1.5rem;
+}
+
+.blog-topics a {
+    padding: .65rem 1.1rem;
+    border: 1px solid var(--card-separator-color);
+    border-radius: 2rem;
+    color: var(--accent-color);
+    font-size: 1.4rem;
+    font-weight: 600;
+}
+
+.blog-topics a:hover {
+    background: var(--card-background-selected);
+}
+
+.blog-list-title {
+    margin-block-end: 0;
+}
+
+.blog-search-header,
+.blog-search-results {
+    display: grid;
+    gap: 1.6rem;
+}
+
+.blog-search-form {
+    --button-size: 5rem;
+}
+
+.blog-search-form label {
+    color: var(--card-text-color-secondary);
+}
+
+.blog-search-form input {
+    box-sizing: border-box;
+    padding-inline-end: calc(var(--button-size) + .5rem);
+    border: 1px solid var(--card-separator-color);
+}
+
+.blog-intro .blog-search-form input {
+    background: var(--body-background);
+}
+
+.blog-search-form input:focus-visible,
+.blog-search-form button:focus-visible,
+.blog-topics a:focus-visible,
+#search-results a:focus-visible {
+    outline: 2px solid var(--accent-color);
+    outline-offset: -2px;
+}
+
+.search-status {
+    margin-block: 0;
+    font-size: 1.5rem;
+}
+
+.search-status:empty {
+    position: absolute;
+    inline-size: 1px;
+    block-size: 1px;
+    overflow: hidden;
+    clip-path: inset(50%);
+}
+
+#search-results:empty {
+    display: none;
+}
+
+.search-excerpt,
+.search-topics {
+    margin: .55rem 0 0;
+    color: var(--card-text-color-secondary);
+    font-size: 1.5rem;
+    line-height: 1.5;
+    overflow-wrap: anywhere;
+}
+
+.search-topics {
+    font-size: 1.4rem;
+}

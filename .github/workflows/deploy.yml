@@ -21,7 +21,7 @@ jobs:
     env:
       DART_SASS_VERSION: 1.97.1
       GO_VERSION: 1.25.5
-      HUGO_VERSION: 0.154.2
+      HUGO_VERSION: 0.170.1
       NODE_VERSION: 24.12.0
       TZ: Europe/Oslo
     steps:
@@ -54,8 +54,7 @@ jobs:
       - name: Setup Hugo
         uses: peaceiris/actions-hugo@v3
         with:
-          hugo-version: 'latest'
-          extended: true
+          hugo-version: ${{ env.HUGO_VERSION }}
       - name: Verify installations
         run: |
           echo "Dart Sass: $(sass --version)"

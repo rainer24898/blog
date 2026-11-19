@@ -1,5 +1,6 @@
 # Pages placed under these sections will be shown on homepage and archive page.
 mainSections = ["post"]
+description = "Blog kỹ thuật của Raiii về lớp vật lý 4G LTE và 5G NR, Linux, lập trình C và mạng máy tính."
 # Output page's full content in RSS.
 rssFullContent = true
 favicon        = "img/android-chrome-192x192.png"
@@ -19,11 +20,11 @@ SortBy              = "default"
 
 [sidebar]
     emoji    = "🤓"
-    subtitle = "Work hard, dream big!!!"
-    avatar   = "img/sm.jpg"
+    subtitle = "4G LTE · 5G NR · Linux · C"
+    avatar   = "img/sm-300.webp"
 
 [article]
-    headingAnchor = false
+    headingAnchor = true
     math          = false
     readingTime   = true
 
@@ -33,10 +34,8 @@ SortBy              = "default"
 
 [widgets]
     homepage = [
-        { type = "search" },
         { type = "archives", params = { limit = 5 } },
         { type = "categories", params = { limit = 10 } },
-        { type = "tag-cloud", params = { limit = 10 } },
     ]
     page = [{ type = "toc" }]
 
@@ -50,8 +49,4 @@ SortBy              = "default"
 
 ## Comments
 [comments]
-    enabled  = true
-    provider = "disqus"
-
-    # See all the available configurations at https://github.com/CaiJimmy/hugo-theme-stack/blob/master/config/_default/params.toml
-    # Copy the configurations you need from there and paste it here.
+    enabled = false

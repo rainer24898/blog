@@ -1,5 +1,6 @@
 ---
 title: LTE Transmission Mode 9 (TM9)
+description: "Theo dõi luồng xử lý LTE TM9 từ CSI-RS, phản hồi RI/PMI/CQI và precoding đến ước lượng kênh bằng DM-RS và giải mã PDSCH."
 author: rainer
 date: '2026-03-06T01:26:00+03:00'
 categories:
@@ -127,7 +128,7 @@ image:
   - [42.6 RI không bằng “số antenna tối đa”](#426-ri-không-bằng-số-antenna-tối-đa)
   - [42.7 PMI không phải exact physical beam weight](#427-pmi-không-phải-exact-physical-beam-weight)
   - [42.8 DM-RS “được precoded giống PDSCH” cần hiểu ở logical antenna-port level](#428-dm-rs-được-precoded-giống-pdsch-cần-hiểu-ở-logical-antenna-port-level)
-  - [42.9 (H) từ CSI-RS và (G) từ DM-RS không phải hai measurement có mục đích giống nhau](#429-h-từ-csi-rs-và-g-từ-dm-rs-không-phải-hai-measurement-có-mục-đích-giống-nhau)
+  - [42.9 (H) từ CSI-RS và (G) từ DM-RS không phải hai measurement có mục đích giống nhau](#429--từ-csi-rs-và--từ-dm-rs-không-phải-hai-measurement-có-mục-đích-giống-nhau)
 - [43. Các công thức quan trọng](#43-các-công-thức-quan-trọng)
   - [43.1 Reference-signal channel estimation](#431-reference-signal-channel-estimation)
   - [43.2 MIMO channel](#432-mimo-channel)

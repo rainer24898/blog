@@ -283,7 +283,7 @@ Beam #2 → SSB #2
 UE đo RSRP/quality của từng SSB và chọn beam mạnh nhất
 ```
 
-Chi tiết về kênh có thể đọc thêm tại: [5G NR SSB](https://rainer24898.github.io/blog/p/SSB/ "SSB")
+Chi tiết về kênh có thể đọc thêm tại: [5G NR SSB]({{< relref "post/2025-12-24-SSB.md" >}} "SSB")
 
 ---
 

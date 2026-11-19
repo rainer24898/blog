@@ -29,7 +29,7 @@ In case you got lost during the setup process, here's a video tutorial that setu
 
 ---
 
-In case you don't want to use GitHub codespace, you can also run this template in your local machine. **You need to install Git, Go and Hugo extended locally.** For more information, check official Hugo documentation: https://gohugo.io/installation/
+To run this blog locally, install Git, Go, Hugo and Dart Sass, and add them to your PATH. The versions used for deployment are in [.github/workflows/deploy.yml](.github/workflows/deploy.yml). Run `hugo server` for a local preview or `hugo --gc --minify` for a production build.
 
 ## Update theme manually
 

@@ -1,0 +1,36 @@
+{{ define "main" }}
+    {{- $paginator := partial "helper/paginator.html" . -}}
+
+    {{ if eq $paginator.PageNumber 1 }}
+        <header class="blog-intro">
+            <h1>Blog kỹ thuật của Raiii</h1>
+            <p>Tìm hiểu lớp vật lý 4G LTE và 5G NR, Linux kernel, driver và lập trình C qua phân tích kỹ thuật, công thức và ví dụ mã nguồn.</p>
+            {{ with site.GetPage "/page/search" }}
+                {{ partial "blog/search-form.html" (dict "page" . "id" "home-search") }}
+            {{ end }}
+            <nav class="blog-topics" aria-label="Chủ đề chính">
+                {{ range slice "4g-lte" "5g-nr" "linux" "linux-driver" "c" }}
+                    {{ with site.GetPage (printf "/categories/%s" .) }}
+                        <a href="{{ .RelPermalink }}">{{ .LinkTitle }}</a>
+                    {{ end }}
+                {{ end }}
+            </nav>
+        </header>
+        <h2 class="section-title blog-list-title">Bài viết mới</h2>
+    {{ else }}
+        <h1 class="section-title blog-list-title">Bài viết</h1>
+    {{ end }}
+
+    <section class="article-list" aria-label="Danh sách bài viết">
+        {{ range $paginator.Pages }}
+            {{ partial "article-list/default" . }}
+        {{ end }}
+    </section>
+
+    {{ partial "pagination.html" . }}
+    {{ partial "footer/footer" . }}
+{{ end }}
+
+{{ define "right-sidebar" }}
+    {{ partial "sidebar/right.html" (dict "Context" . "Scope" "homepage") }}
+{{ end }}

@@ -1,0 +1,5 @@
+{{/* Adapted from Hugo Theme Stack v4.0.3, Jimmy Cai and contributors, GPL-3.0. */}}
+{{- $toc := .Scratch.Get "articleTOC" | default .TableOfContents -}}
+{{- $toc = replace $toc `<nav id="TableOfContents">` "" -}}
+{{- $toc = replace $toc "</nav>" "" -}}
+{{- return $toc -}}
