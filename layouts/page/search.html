@@ -1,19 +1,44 @@
 {{ define "body-class" }}template-search{{ end }}
 
 {{ define "main" }}
+    {{- $posts := partial "helper/pages.html" site.Home -}}
+    {{- $catalog := slice -}}
+    {{- range $posts -}}
+        {{- $data := partialCached "blog/search-post-data.html" . .RelPermalink -}}
+        {{- $preview := $data.content | truncate 170 -}}
+        {{- $catalog = $catalog | append (dict "title" $data.title "permalink" $data.permalink "content" $preview "description" $data.description "categories" $data.categories "categorySlugs" $data.categorySlugs) -}}
+    {{- end -}}
+    {{- $catalogResource := resources.FromString "search/catalog.json" (jsonify $catalog) | fingerprint -}}
+
     <header class="blog-search-header">
         <h1>Tìm kiếm</h1>
         {{ partial "blog/search-form.html" (dict "page" . "id" "post-search" "results" true) }}
+
+        <div class="search-topic-filter" hidden>
+            <label for="search-category">Chủ đề</label>
+            <div class="search-topic-field">
+                <select id="search-category" name="category" data-catalog="{{ $catalogResource.RelPermalink }}">
+                    <option value="">Tất cả chủ đề</option>
+                    {{ range site.Taxonomies.categories.Alphabetical }}
+                        {{ if intersect .Pages $posts }}
+                            <option value="{{ path.Base .Page.RelPermalink }}">{{ .Page.LinkTitle }}</option>
+                        {{ end }}
+                    {{ end }}
+                </select>
+            </div>
+        </div>
     </header>
 
     <div class="blog-search-results">
         <p class="search-status" role="status"></p>
+        <button class="search-retry" type="button" hidden>Thử lại</button>
         <div class="article-list--compact" id="search-results"></div>
     </div>
 
     <noscript>
         <p>Bật JavaScript để tìm kiếm toàn văn.
-            {{ with site.GetPage "/page/archives" }}Bạn cũng có thể <a href="{{ .RelPermalink }}">xem các bài trong mục Lưu trữ</a>.{{ end }}
+            {{ with site.GetPage "/categories" }}Xem bài viết <a href="{{ .RelPermalink }}">theo chủ đề</a>.{{ end }}
+            {{ with site.GetPage "/page/archives" }}Xem bài viết <a href="{{ .RelPermalink }}">theo năm</a>.{{ end }}
         </p>
     </noscript>
 

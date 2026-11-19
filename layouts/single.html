@@ -27,6 +27,10 @@
 {{ end }}
 
 {{ define "main" }}
+    {{ if eq .Section "post" }}
+        {{ partialCached "blog/article-navigation.html" . .Language.Lang }}
+    {{ end }}
+
     {{ partial "article/article.html" . }}
 
     {{ if .Params.links }}

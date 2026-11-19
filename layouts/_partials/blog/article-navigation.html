@@ -1,0 +1,7 @@
+<progress class="article-reading-progress" max="100" value="0" aria-label="{{ cond (eq .Language.Lang "vi") "Tiến độ đọc bài" "Reading progress" }}" hidden></progress>
+<button class="article-back-to-top" type="button" hidden>
+    {{- cond (eq .Language.Lang "vi") "Về đầu bài" "Back to article top" -}}
+</button>
+
+{{- $script := resources.Get "js/article-navigation.js" | js.Build (dict "minify" hugo.IsProduction) | fingerprint -}}
+<script src="{{ $script.RelPermalink }}" defer></script>

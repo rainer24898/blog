@@ -1,9 +1,11 @@
 const form = document.querySelector(".blog-search-form[data-json]");
 const input = form.elements.namedItem("keyword");
+const category = document.querySelector("#search-category");
 const status = document.querySelector(".search-status");
 const results = document.querySelector("#search-results");
+const retry = document.querySelector(".search-retry");
+const dataRequests = new Map();
 
-let indexRequest;
 let timer;
 let revision = 0;
 
@@ -11,8 +13,10 @@ function fold(text) {
     return text.toLowerCase().normalize("NFD").replace(/\p{M}/gu, "").replace(/đ/g, "d");
 }
 
-function loadIndex() {
-    indexRequest ??= fetch(form.dataset.json)
+function loadPosts(url) {
+    if (dataRequests.has(url)) return dataRequests.get(url);
+
+    const request = fetch(url)
         .then((response) => {
             if (!response.ok) throw new Error("Search index unavailable");
             return response.json();
@@ -30,10 +34,12 @@ function loadIndex() {
             };
         }))
         .catch((error) => {
-            indexRequest = undefined;
+            dataRequests.delete(url);
             throw error;
         });
-    return indexRequest;
+
+    dataRequests.set(url, request);
+    return request;
 }
 
 function rank(post, phrase, terms) {
@@ -59,7 +65,7 @@ function excerpt(post, terms) {
     const start = Math.max(0, match - 40);
     const startSpace = post.body.indexOf(" ", start);
     const from = start > 0 && startSpace > start && startSpace < match ? startSpace + 1 : start;
-    const end = Math.max(from + 145, match + Math.max(...terms.map((term) => term.length)));
+    const end = Math.max(from + 145, match + Math.max(0, ...terms.map((term) => term.length)));
     const endSpace = post.body.indexOf(" ", end);
     const to = endSpace > end && endSpace - end < 24 ? endSpace : end;
     const text = post.body.slice(from, to).trim();
@@ -94,54 +100,70 @@ function renderResult(post, terms) {
     return article;
 }
 
-async function search(query, currentRevision) {
+async function search(query, topic, currentRevision) {
     const phrase = fold(query).replace(/\s+/g, " ").trim();
-    if (!phrase) return;
-    const terms = [...new Set(phrase.split(" "))];
+    if (!phrase && !topic.value) return;
+    const terms = phrase ? [...new Set(phrase.split(" "))] : [];
+    const source = phrase ? form.dataset.json : category.dataset.catalog;
     status.textContent = "Đang tìm bài viết…";
 
     try {
-        const posts = await loadIndex();
+        const posts = await loadPosts(source);
         if (currentRevision !== revision) return;
 
         const matches = posts
-            .map((post) => ({ post, score: rank(post, phrase, terms) }))
+            .filter((post) => {
+                if (!topic.value) return true;
+                if (post.categorySlugs) return post.categorySlugs.includes(topic.value);
+                return post.categories.includes(topic.textContent);
+            })
+            .map((post) => ({ post, score: phrase ? rank(post, phrase, terms) : 1 }))
             .filter(({ score }) => score > 0)
             .sort((first, second) => second.score - first.score);
         results.replaceChildren(...matches.map(({ post }) => renderResult(post, terms)));
         status.textContent = matches.length
-            ? matches.length + " bài viết"
+            ? matches.length + " bài viết" + (topic.value ? " · " + topic.textContent : "")
             : "Không tìm thấy bài viết phù hợp.";
     } catch {
         if (currentRevision === revision) {
-            status.textContent = "Không tải được dữ liệu tìm kiếm. Nhấn Enter để thử lại.";
+            status.textContent = "Không tải được dữ liệu tìm kiếm.";
+            retry.hidden = false;
         }
     }
 }
 
-function scheduleSearch({ immediate = false, updateURL = true } = {}) {
+function scheduleSearch({ immediate = false, historyMode = "replace" } = {}) {
     const query = input.value.slice(0, input.maxLength).trim();
+    const topic = category.selectedOptions[0];
     const currentRevision = ++revision;
     clearTimeout(timer);
     results.replaceChildren();
     status.textContent = "";
+    retry.hidden = true;
 
-    if (updateURL) {
+    if (historyMode) {
         const url = new URL(window.location.href);
         if (query) url.searchParams.set("keyword", query);
         else url.searchParams.delete("keyword");
-        window.history.replaceState(window.history.state, "", url);
+        if (topic.value) url.searchParams.set("category", topic.value);
+        else url.searchParams.delete("category");
+        if (url.href !== window.location.href) {
+            if (historyMode === "push") window.history.pushState(window.history.state, "", url);
+            else window.history.replaceState(window.history.state, "", url);
+        }
     }
 
-    if (!query) return;
-    if (immediate) search(query, currentRevision);
-    else timer = setTimeout(() => search(query, currentRevision), 180);
+    if (!query && !topic.value) return;
+    if (immediate) search(query, topic, currentRevision);
+    else timer = setTimeout(() => search(query, topic, currentRevision), 180);
 }
 
 function readLocation() {
-    input.value = new URLSearchParams(window.location.search)
-        .get("keyword")?.slice(0, input.maxLength) ?? "";
-    scheduleSearch({ immediate: true, updateURL: false });
+    const params = new URLSearchParams(window.location.search);
+    input.value = params.get("keyword")?.slice(0, input.maxLength) ?? "";
+    category.value = params.get("category") ?? "";
+    if (category.selectedIndex === -1) category.selectedIndex = 0;
+    scheduleSearch({ immediate: true, historyMode: null });
 }
 
 form.addEventListener("submit", (event) => {
@@ -152,5 +174,11 @@ input.addEventListener("input", (event) => {
     if (!event.isComposing) scheduleSearch();
 });
 input.addEventListener("compositionend", () => scheduleSearch());
+category.addEventListener("change", () => scheduleSearch({ immediate: true, historyMode: "push" }));
+retry.addEventListener("click", () => {
+    (input.value ? input : category).focus();
+    scheduleSearch({ immediate: true });
+});
 window.addEventListener("popstate", readLocation);
+category.closest(".search-topic-filter").hidden = false;
 readLocation();

@@ -1,0 +1,64 @@
+.article-reading-progress {
+    appearance: none;
+    position: fixed;
+    z-index: 5;
+    inset-block-start: 0;
+    inset-inline-start: 0;
+    inline-size: 100%;
+    block-size: 3px;
+    margin: 0;
+    border: 0;
+    background: transparent;
+    color: var(--blog-accent, var(--accent-color));
+    pointer-events: none;
+}
+
+.article-reading-progress::-webkit-progress-bar {
+    background: transparent;
+}
+
+.article-reading-progress::-webkit-progress-value {
+    background: currentColor;
+}
+
+.article-reading-progress::-moz-progress-bar {
+    background: currentColor;
+}
+
+.article-back-to-top {
+    position: fixed;
+    z-index: 4;
+    inset-inline-end: max(1.2rem, env(safe-area-inset-right));
+    inset-block-end: max(1.2rem, env(safe-area-inset-bottom));
+    min-block-size: 44px;
+    padding: .6rem 1.2rem;
+    border: 1px solid var(--blog-accent, var(--accent-color));
+    border-radius: 99px;
+    background: var(--card-background);
+    color: var(--blog-accent, var(--accent-color));
+    box-shadow: var(--shadow-l1);
+    font-size: 1.4rem;
+    font-weight: 600;
+    cursor: pointer;
+}
+
+.article-back-to-top:hover {
+    background: var(--card-background-selected);
+}
+
+.article-back-to-top:focus-visible,
+.main-article .article-title[tabindex="-1"]:focus-visible {
+    outline: 2px solid var(--blog-accent, var(--accent-color));
+    outline-offset: 3px;
+}
+
+.main-article .article-title[tabindex="-1"] {
+    scroll-margin-block-start: 1.5rem;
+}
+
+@media print {
+    .article-reading-progress,
+    .article-back-to-top {
+        display: none;
+    }
+}

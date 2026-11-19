@@ -3,34 +3,50 @@
 
     {{ if eq $paginator.PageNumber 1 }}
         <header class="blog-intro">
-            <h1>Blog kỹ thuật của Raiii</h1>
-            <p>Tìm hiểu lớp vật lý 4G LTE và 5G NR, Linux kernel, driver và lập trình C qua phân tích kỹ thuật, công thức và ví dụ mã nguồn.</p>
-            {{ with site.GetPage "/page/search" }}
-                {{ partial "blog/search-form.html" (dict "page" . "id" "home-search") }}
+            {{ with resources.Get "img/radio-rooftop.webp" }}
+                {{ $small := .Resize "640x webp q78" }}
+                {{ $medium := .Resize "960x webp q80" }}
+                <img class="blog-intro-image" src="{{ $medium.RelPermalink }}"
+                    srcset="{{ $small.RelPermalink }} {{ $small.Width }}w, {{ $medium.RelPermalink }} {{ $medium.Width }}w, {{ .RelPermalink }} {{ .Width }}w"
+                    sizes="(max-width: 767px) 100vw, (max-width: 1250px) 80vw, 1110px"
+                    width="{{ .Width }}" height="{{ .Height }}" alt="" fetchpriority="high">
             {{ end }}
-            <nav class="blog-topics" aria-label="Chủ đề chính">
-                {{ range slice "4g-lte" "5g-nr" "linux" "linux-driver" "c" }}
-                    {{ with site.GetPage (printf "/categories/%s" .) }}
-                        <a href="{{ .RelPermalink }}">{{ .LinkTitle }}</a>
-                    {{ end }}
+            <div class="blog-intro-copy">
+                <h1>Ghi chép kỹ thuật về 4G, 5G và Linux</h1>
+                <p>Phân tích lớp vật lý, Linux kernel và lập trình C qua sơ đồ, công thức và ví dụ mã nguồn.</p>
+                {{ with site.GetPage "/page/search" }}
+                    {{ partial "blog/search-form.html" (dict "page" . "id" "home-search" "placeholder" "Tìm MIMO, Linux…") }}
                 {{ end }}
-            </nav>
+                {{ with .OutputFormats.Get "RSS" }}
+                    <a class="blog-rss" href="{{ .RelPermalink }}" type="{{ .MediaType.Type }}">
+                        {{ partial "helper/icon" "rss" }}
+                        Theo dõi qua RSS
+                    </a>
+                {{ end }}
+            </div>
         </header>
-        <h2 class="section-title blog-list-title">Bài viết mới</h2>
-    {{ else }}
-        <h1 class="section-title blog-list-title">Bài viết</h1>
+
+        {{ partial "blog/topics.html" . }}
     {{ end }}
 
-    <section class="article-list" aria-label="Danh sách bài viết">
-        {{ range $paginator.Pages }}
-            {{ partial "article-list/default" . }}
-        {{ end }}
+    <section class="blog-section" aria-labelledby="home-posts">
+        <div class="blog-section-heading">
+            {{ if eq $paginator.PageNumber 1 }}
+                <h2 id="home-posts">Bài viết mới</h2>
+            {{ else }}
+                <h1 id="home-posts">Bài viết</h1>
+            {{ end }}
+            {{ with site.GetPage "/page/archives" }}
+                <a href="{{ .RelPermalink }}">Xem lưu trữ</a>
+            {{ end }}
+        </div>
+        <div class="article-list blog-post-list">
+            {{ range $paginator.Pages }}
+                {{ partial "article-list/default" . }}
+            {{ end }}
+        </div>
     </section>
 
     {{ partial "pagination.html" . }}
     {{ partial "footer/footer" . }}
-{{ end }}
-
-{{ define "right-sidebar" }}
-    {{ partial "sidebar/right.html" (dict "Context" . "Scope" "homepage") }}
 {{ end }}

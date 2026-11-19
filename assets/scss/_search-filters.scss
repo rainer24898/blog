@@ -1,0 +1,55 @@
+.search-topic-filter {
+    min-inline-size: 0;
+}
+
+.search-topic-filter label {
+    display: block;
+    margin-block-end: .5rem;
+    color: var(--card-text-color-secondary);
+    font-size: 1.4rem;
+}
+
+.search-topic-field {
+    position: relative;
+    max-inline-size: min(100%, 32rem);
+
+    &::after {
+        content: "";
+        position: absolute;
+        inset-block-start: calc(50% - .6rem);
+        inset-inline-end: 1.6rem;
+        inline-size: .7rem;
+        block-size: .7rem;
+        border: solid var(--card-text-color-secondary);
+        border-width: 0 2px 2px 0;
+        transform: rotate(45deg);
+        pointer-events: none;
+    }
+}
+
+.search-topic-field select,
+.search-retry {
+    min-block-size: 4.4rem;
+    padding: .8rem 1.2rem;
+    border: 1px solid var(--card-separator-color);
+    border-radius: var(--card-border-radius);
+    background: var(--card-background);
+    color: var(--card-text-color-main);
+    font-size: 1.5rem;
+    cursor: pointer;
+
+    &:focus-visible {
+        outline: 2px solid var(--accent-color);
+        outline-offset: 2px;
+    }
+}
+
+.search-topic-field select {
+    inline-size: 100%;
+    padding-inline-end: 3.2rem;
+    appearance: none;
+}
+
+.search-retry {
+    justify-self: start;
+}

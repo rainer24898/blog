@@ -1,15 +1,6 @@
 {{- $posts := partial "helper/pages.html" site.Home -}}
 {{- $results := slice -}}
 {{- range $posts -}}
-    {{- $categories := slice -}}
-    {{- range .GetTerms "categories" -}}
-        {{- $categories = $categories | append .LinkTitle -}}
-    {{- end -}}
-    {{- $tags := slice -}}
-    {{- range .GetTerms "tags" -}}
-        {{- $tags = $tags | append .LinkTitle -}}
-    {{- end -}}
-    {{- $text := .Plain | htmlUnescape | replaceRE `\s+` " " | strings.TrimSpace -}}
-    {{- $results = $results | append (dict "title" .Title "date" .Date "permalink" .RelPermalink "content" $text "description" .Description "categories" $categories "tags" $tags) -}}
+    {{- $results = $results | append (partialCached "blog/search-post-data.html" . .RelPermalink) -}}
 {{- end -}}
 {{- jsonify $results -}}

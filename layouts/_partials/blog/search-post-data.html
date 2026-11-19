@@ -1,0 +1,12 @@
+{{- $categories := slice -}}
+{{- $categorySlugs := slice -}}
+{{- range .GetTerms "categories" -}}
+    {{- $categories = $categories | append .LinkTitle -}}
+    {{- $categorySlugs = $categorySlugs | append (path.Base .RelPermalink) -}}
+{{- end -}}
+{{- $tags := slice -}}
+{{- range .GetTerms "tags" -}}
+    {{- $tags = $tags | append .LinkTitle -}}
+{{- end -}}
+{{- $text := .Plain | htmlUnescape | replaceRE `\s+` " " | strings.TrimSpace -}}
+{{- return (dict "title" .Title "date" .Date "permalink" .RelPermalink "content" $text "description" .Description "categories" $categories "categorySlugs" $categorySlugs "tags" $tags) -}}

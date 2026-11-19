@@ -1,0 +1,30 @@
+{{ $topics := slice
+    (dict "slug" "4g-lte" "description" "MIMO, CSI-RS và luồng xử lý PDSCH")
+    (dict "slug" "5g-nr" "description" "Kênh vật lý, tín hiệu tham chiếu và FAPI")
+    (dict "slug" "linux" "description" "Tiến trình, bộ nhớ và hệ thống tệp")
+    (dict "slug" "linux-driver" "description" "Driver mạng và API trong kernel")
+    (dict "slug" "c" "description" "Kiểu dữ liệu, cấu trúc và quản lý bộ nhớ")
+}}
+
+<section class="blog-section" aria-labelledby="home-topics">
+    <div class="blog-section-heading">
+        <h2 id="home-topics">Chủ đề</h2>
+        {{ with site.GetPage "/categories" }}
+            <a href="{{ .RelPermalink }}">Tất cả chủ đề</a>
+        {{ end }}
+    </div>
+    <ul class="blog-topic-list">
+        {{ range $topics }}
+            {{ $description := .description }}
+            {{ with site.GetPage (printf "/categories/%s" .slug) }}
+                <li>
+                    <a class="blog-topic-card" href="{{ .RelPermalink }}">
+                        <span class="blog-topic-title">{{ .LinkTitle }}</span>
+                        <span class="blog-topic-description">{{ $description }}</span>
+                        <span class="blog-topic-count">{{ len .RegularPages }} bài</span>
+                    </a>
+                </li>
+            {{ end }}
+        {{ end }}
+    </ul>
+</section>
