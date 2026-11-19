@@ -1,0 +1,14 @@
+{
+  "name": "raiii-blog",
+  "private": true,
+  "type": "module",
+  "engines": {
+    "node": ">=22.12"
+  },
+  "dependencies": {
+    "@mdit/plugin-katex": "1.2.0",
+    "katex": "0.19.1",
+    "markdown-it": "15.0.3",
+    "yaml": "2.9.1"
+  }
+}

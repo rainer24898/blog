@@ -1,2 +1,11 @@
 [[imports]]
     path = "github.com/CaiJimmy/hugo-theme-stack/v4"
+
+[[mounts]]
+    source = "assets"
+    target = "assets"
+
+[[mounts]]
+    source = "node_modules/katex/dist"
+    target = "assets/editor-katex"
+    files = ["katex.min.css", "fonts/*"]

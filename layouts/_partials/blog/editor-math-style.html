@@ -1,0 +1,5 @@
+{{- $style := resources.Get "editor-katex/katex.min.css" | fingerprint -}}
+<link rel="stylesheet" href="{{ $style.RelPermalink }}">
+{{- range resources.Match "editor-katex/fonts/*" -}}
+    {{- $published := .RelPermalink -}}
+{{- end -}}

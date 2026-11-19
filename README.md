@@ -21,7 +21,7 @@ In case you got lost during the setup process, here's a video tutorial that setu
 3. While waiting for the codespace to be created, go to `Settings` -> `Pages` of your newly created repository, and set `Build and deployment` -> `Source` to `GitHub Actions`.
 ![Change build and deployment source](https://github.com/user-attachments/assets/192459bf-25d8-441e-8029-c108d789e449)
 
-4. After the codespace is created, you can test that the site is built successfully by running `hugo server` in the terminal and see your new site in action. 
+4. In the codespace, run `npm ci` and then `hugo server` to preview the site.
 
 5. Check `config` folder for the configuration files. You can edit them to suit your needs. Make sure to update the `baseurl` property in `config/_default/config.toml` to your site's URL. For example, if your new repository is named `my-blog`, then the `baseurl` should be `https://<username>.github.io/my-blog/`.
 
@@ -29,7 +29,7 @@ In case you got lost during the setup process, here's a video tutorial that setu
 
 ---
 
-To run this blog locally, install Git, Go, Hugo and Dart Sass, and add them to your PATH. The versions used for deployment are in [.github/workflows/deploy.yml](.github/workflows/deploy.yml). Run `hugo server` for a local preview or `hugo --gc --minify` for a production build.
+To run this blog locally, install Git, Go, Hugo, Dart Sass, and Node.js 22.12 or newer, and add them to your PATH. The versions used for deployment are in [.github/workflows/deploy.yml](.github/workflows/deploy.yml). Run `npm ci` to install the editor dependencies, then `hugo server` for a local preview or `hugo --gc --minify` for a production build.
 
 ## Update theme manually
 

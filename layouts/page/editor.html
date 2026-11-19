@@ -1,0 +1,133 @@
+{{ define "body-class" }}template-editor{{ end }}
+
+{{ define "head" }}
+    {{ partial "blog/editor-math-style.html" . }}
+{{ end }}
+
+{{ define "main" }}
+    <section class="editor-shell" data-blog-editor data-mode="write" aria-labelledby="editor-page-title">
+        <header class="editor-page-heading">
+            <h1 id="editor-page-title">{{ .Title }}</h1>
+            <p>Bản nháp lưu trong trình duyệt này. Xuất tệp Markdown để đăng lên blog.</p>
+        </header>
+
+        <p class="editor-loading" data-editor-loading role="status">Đang mở trình soạn thảo…</p>
+        <noscript>
+            <p>Bật JavaScript để soạn thảo, xem trước và lưu bản nháp trên trang này.</p>
+        </noscript>
+
+        <div class="editor-workspace" data-editor-workspace hidden>
+            <div class="editor-draft-bar">
+                <div class="editor-field editor-draft-select">
+                    <label for="editor-draft">Bản nháp</label>
+                    <select id="editor-draft" data-draft-list></select>
+                </div>
+                <div class="editor-actions">
+                    <button class="editor-button" type="button" data-draft-new aria-label="Tạo mới bản nháp">Tạo mới</button>
+                    <label class="editor-button editor-import">
+                        <input type="file" data-editor-import accept=".md,.markdown,.mdown,.txt,text/markdown,text/plain">
+                        <span>Nhập .md</span>
+                    </label>
+                    <button class="editor-button editor-button-quiet" type="button" data-draft-delete aria-label="Xóa bản nháp">Xóa</button>
+                </div>
+            </div>
+
+            <div class="editor-metadata">
+                <div class="editor-field">
+                    <label for="editor-title">Tiêu đề</label>
+                    <input id="editor-title" type="text" maxlength="160" placeholder="Tiêu đề bài viết" data-editor-title>
+                </div>
+
+                <details class="editor-details">
+                    <summary>Thông tin bài viết</summary>
+                    <div class="editor-details-fields">
+                        <div class="editor-field">
+                            <label for="editor-description">Mô tả</label>
+                            <input id="editor-description" type="text" maxlength="300" data-editor-description>
+                        </div>
+                        <div class="editor-field">
+                            <label for="editor-date">Ngày đăng</label>
+                            <input id="editor-date" type="date" data-editor-date>
+                        </div>
+                        <div class="editor-field">
+                            <label for="editor-categories">Chủ đề</label>
+                            <input id="editor-categories" type="text" placeholder="Linux, 5G NR" data-editor-categories aria-describedby="editor-taxonomy-hint">
+                        </div>
+                        <div class="editor-field">
+                            <label for="editor-tags">Thẻ</label>
+                            <input id="editor-tags" type="text" placeholder="MIMO, kernel" data-editor-tags aria-describedby="editor-taxonomy-hint">
+                        </div>
+                        <p id="editor-taxonomy-hint" class="editor-hint">Phân cách các chủ đề và thẻ bằng dấu phẩy.</p>
+                        <label class="editor-publish-checkbox">
+                            <input type="checkbox" data-editor-is-draft>
+                            Giữ ở dạng bản nháp trong Hugo
+                        </label>
+                    </div>
+                </details>
+            </div>
+
+            <div class="editor-stage">
+                <div class="editor-mode" role="group" aria-label="Chế độ soạn thảo">
+                    <button class="editor-button" type="button" data-editor-mode="write" aria-controls="editor-source-pane" aria-pressed="true">Markdown</button>
+                    <button class="editor-button" type="button" data-editor-mode="preview" aria-controls="editor-preview-pane" aria-pressed="false">Xem trước</button>
+                </div>
+
+                <div class="editor-panes">
+                    <section class="editor-pane editor-source-pane" id="editor-source-pane" aria-labelledby="editor-source-heading">
+                        <header class="editor-pane-heading">
+                            <h2 id="editor-source-heading">Markdown</h2>
+                            <span class="editor-hint" data-editor-count>0 từ</span>
+                        </header>
+                        <div class="editor-formatting" role="group" aria-label="Chèn cú pháp Markdown">
+                            <button class="editor-button" type="button" data-editor-insert="heading">Tiêu đề mục</button>
+                            <button class="editor-button" type="button" data-editor-insert="bold">Đậm</button>
+                            <button class="editor-button" type="button" data-editor-insert="italic">Nghiêng</button>
+                            <button class="editor-button" type="button" data-editor-insert="link">Liên kết</button>
+                            <button class="editor-button" type="button" data-editor-insert="list">Danh sách</button>
+                            <button class="editor-button" type="button" data-editor-insert="code">Khối mã</button>
+                            <button class="editor-button" type="button" data-editor-insert="table">Bảng</button>
+                            <button class="editor-button" type="button" data-editor-insert="math">Công thức</button>
+                        </div>
+                        <textarea id="editor-source" class="editor-source" aria-label="Nội dung Markdown" data-editor-body
+                            rows="14" spellcheck="false" autocapitalize="off" placeholder="## Bắt đầu một mục mới"></textarea>
+                    </section>
+
+                    <section class="editor-pane editor-preview-pane" id="editor-preview-pane" aria-labelledby="editor-preview-heading">
+                        <header class="editor-pane-heading">
+                            <h2 id="editor-preview-heading">Xem trước</h2>
+                        </header>
+                        <div class="editor-preview-scroll" tabindex="0" role="region" aria-label="Nội dung bài xem trước">
+                            <p class="editor-preview-title" data-editor-preview-title></p>
+                            <div class="editor-rendered" data-editor-preview></div>
+                        </div>
+                        <p class="editor-hint editor-preview-note">Sơ đồ Mermaid hiển thị dưới dạng mã trong bản xem trước.</p>
+                    </section>
+                </div>
+            </div>
+
+            <footer class="editor-publish">
+                <div class="editor-publish-summary">
+                    <h2>Xuất bài</h2>
+                    <p class="editor-hint" data-editor-status role="status"></p>
+                </div>
+                <div class="editor-actions">
+                    <button class="editor-button" type="button" data-editor-copy>Sao chép Markdown</button>
+                    <button class="editor-button editor-button-primary" type="button" data-editor-download>Tải tệp .md</button>
+                </div>
+                <div class="editor-filename">
+                    <code data-editor-filename aria-label="Tên tệp xuất"></code>
+                    <button class="editor-button editor-button-quiet" type="button" data-editor-copy-filename>Sao chép tên tệp</button>
+                </div>
+                {{ with .Params.publishURL }}
+                    <p class="editor-hint editor-publish-instructions">Để đăng bài, tạo một tệp trong <code>content/post</code> trên GitHub với tên của tệp đã tải, dán Markdown rồi commit. GitHub Actions sẽ chạy quy trình triển khai.</p>
+                    <a class="editor-button editor-publish-link" href="{{ . }}" target="_blank" rel="noopener noreferrer">Mở GitHub</a>
+                {{ end }}
+            </footer>
+        </div>
+    </section>
+
+    {{ $script := resources.Get "js/blog-editor.js" | js.Build (dict "minify" hugo.IsProduction) | fingerprint }}
+    <script src="{{ $script.RelPermalink }}" defer></script>
+
+    {{ partialCached "footer/footer" . }}
+{{ end }}

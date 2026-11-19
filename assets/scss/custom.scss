@@ -1,6 +1,8 @@
 @use "reading";
 @use "article-navigation";
 @use "search-filters";
+@use "blog-motion";
+@use "editor";
 
 :root {
     --blog-bg: #edf2f5;

@@ -1,0 +1,107 @@
+.blog-post-list .article-title a:focus-visible {
+    outline: 2px solid var(--blog-accent);
+    outline-offset: 2px;
+}
+
+.blog-post-list .article-image:has(a:focus-visible) {
+    outline: 2px solid var(--blog-accent);
+    outline-offset: -2px;
+}
+
+.blog-post-list > article:focus-within {
+    border-color: var(--blog-accent);
+}
+
+@keyframes blog-settle {
+    from { translate: 0 .6rem; }
+    to { translate: 0 0; }
+}
+
+@keyframes blog-result-entry {
+    from {
+        opacity: .86;
+        translate: 0 .35rem;
+    }
+    to {
+        opacity: 1;
+        translate: 0 0;
+    }
+}
+
+@media (prefers-reduced-motion: no-preference) {
+    .blog-intro-copy > :is(h1, p) {
+        animation: blog-settle 360ms ease-out backwards;
+    }
+
+    .blog-intro-copy > p {
+        animation-delay: 45ms;
+    }
+
+    .blog-topic-card {
+        transition: translate 160ms ease-out, border-color 160ms ease, box-shadow 160ms ease;
+    }
+
+    .blog-post-list > article {
+        transition: border-color 160ms ease, box-shadow 160ms ease;
+    }
+
+    .blog-post-list .article-image {
+        overflow: hidden;
+    }
+
+    .blog-post-list .article-image img {
+        transition: scale 220ms ease-out;
+    }
+
+    :is(#main-menu > li > a, #main-menu #dark-mode-toggle, .menu-social a, .article-back-to-top) {
+        transition: background-color 140ms ease, color 140ms ease;
+    }
+
+    :is(.blog-rss, .blog-search-form button) svg {
+        transition: scale 140ms ease-out;
+    }
+
+    .blog-search-form button:active svg {
+        scale: .87;
+    }
+
+    #search-results > article:nth-child(-n + 4) {
+        animation: blog-result-entry 200ms ease-out backwards;
+    }
+
+    #search-results > article:nth-child(n + 3):nth-child(-n + 4) {
+        animation-delay: 35ms;
+    }
+
+    #search-results > article:nth-child(-n + 4):focus-within {
+        animation-duration: 0s;
+        animation-delay: 0s;
+    }
+
+    .article-back-to-top:not([hidden]) {
+        animation: blog-settle 180ms ease-out;
+    }
+
+    .article-back-to-top:not([hidden]):focus-visible {
+        animation-duration: 0s;
+    }
+}
+
+@media (hover: hover) and (pointer: fine) and (prefers-reduced-motion: no-preference) {
+    .blog-topic-list > li:hover > .blog-topic-card {
+        translate: 0 -.3rem;
+        box-shadow: var(--shadow-l1);
+    }
+
+    .blog-post-list > article:hover {
+        border-color: var(--blog-accent);
+    }
+
+    .blog-post-list .article-image:hover img {
+        scale: 1.035;
+    }
+
+    .blog-rss:hover svg {
+        scale: 1.13;
+    }
+}
