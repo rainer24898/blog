@@ -36,6 +36,7 @@ function createDraft(data = {}) {
         categories: "",
         tags: "",
         date: localDate.format(new Date()),
+        dateEdited: false,
         isDraft: false,
         filename: "",
         frontMatter: {},
@@ -51,6 +52,7 @@ function decodeDraft(raw, id) {
         return {
             ...draft,
             ...Object.fromEntries(strings.map((name) => [name, typeof draft[name] === "string" ? draft[name] : ""])),
+            dateEdited: draft.dateEdited !== false,
             isDraft: draft.isDraft === true,
             updatedAt: Number.isFinite(draft.updatedAt) ? draft.updatedAt : 0,
             frontMatter: normalizeMetadata(draft.frontMatter ?? {}),
@@ -157,6 +159,7 @@ function readMarkdown(source, filename) {
         categories: labelText(frontMatter.categories),
         tags: labelText(frontMatter.tags),
         date: dateForInput(frontMatter.date) || localDate.format(new Date()),
+        dateEdited: true,
         isDraft: frontMatter.draft === true,
         filename,
         frontMatter,
@@ -182,7 +185,7 @@ function taxonomyLabels(value, original) {
     return [...new Set(value.split(",").map((label) => label.trim()).filter(Boolean))];
 }
 
-function exportMarkdown(draft) {
+function articleHeader(draft) {
     const { date, slug } = fileInfo(draft);
     const original = draft.frontMatter;
     const header = {
@@ -205,7 +208,84 @@ function exportMarkdown(draft) {
         header.math = true;
     }
 
+    return header;
+}
+
+function exportMarkdown(draft, header = articleHeader(draft)) {
     return JSON.stringify(header, null, 2) + "\n\n" + draft.body;
+}
+
+function siteTimestamp(now) {
+    // Contemporary dates in Asia/Ho_Chi_Minh use UTC+07:00.
+    return new Date(now + 7 * 60 * 60 * 1000).toISOString().slice(0, 19) + "+07:00";
+}
+
+function publicationHeader(draft, now) {
+    const header = articleHeader(draft);
+    if (!draft.filename && !draft.dateEdited) header.date = siteTimestamp(now);
+    return header;
+}
+
+function publicationTime(value) {
+    if (typeof value !== "string") return NaN;
+    if (/^\d{4}-\d{2}-\d{2}$/.test(value)) return Date.parse(value + "T00:00:00+07:00");
+    if (/^\d{4}-\d{2}-\d{2}[T ]\d{2}:\d{2}(?::\d{2}(?:\.\d+)?)?$/.test(value)) {
+        return Date.parse(value.replace(" ", "T") + "+07:00");
+    }
+    return Date.parse(value);
+}
+
+function publicationReadiness(draft, header, now) {
+    if (!draft.title.trim()) return { field: "title", state: "error", text: "Nhập tiêu đề bài viết." };
+    if (!draft.body.trim()) return { field: "body", state: "error", text: "Nhập nội dung Markdown." };
+    if (draft.isDraft) {
+        return { field: "draft", state: "draft", text: "Bỏ chọn Giữ ở dạng bản nháp trong Hugo để chuẩn bị đăng." };
+    }
+
+    const metadata = new Map(Object.entries(header).map(([key, value]) => [key.toLowerCase(), value]));
+    const publishedAt = metadata.get("publishdate") ?? metadata.get("pubdate") ?? metadata.get("published") ?? header.date;
+    const expiresAt = metadata.get("expirydate") ?? metadata.get("unpublishdate");
+    if (publicationTime(expiresAt) < now) {
+        return { state: "error", text: "Bài đã hết hạn theo front matter. Hãy sửa ngày hết hạn trong nguồn trước khi đăng." };
+    }
+    if ([publishedAt, header.date].some((value) => publicationTime(value) > now)) {
+        return { state: "scheduled", text: "Bài có ngày đăng trong tương lai. Hugo chỉ hiển thị sau ngày đó khi chạy lại bản dựng." };
+    }
+    return {
+        state: "ready",
+        text: !draft.filename && !draft.dateEdited
+            ? "Bài mới dùng thời điểm hiện tại theo giờ Việt Nam."
+            : "Ngày đăng và thông tin bài viết sẽ được giữ theo bản nháp.",
+    };
+}
+
+function publishedRecords(editor) {
+    try {
+        const records = JSON.parse(editor.dataset.publishedPosts ?? "[]");
+        return Array.isArray(records) ? records : [];
+    } catch {
+        return [];
+    }
+}
+
+function publicationConflict(records, path, draft, header) {
+    const sourceFile = draft.filename ? "content/post/" + draft.filename : "";
+    if (records.some((record) => record.path === path) && path !== sourceFile) {
+        return "Tệp " + path + " đã có trên blog. Dùng tiêu đề khác cho bài mới hoặc nhập tệp cũ để cập nhật.";
+    }
+    if (sourceFile && sourceFile !== path && records.some((record) => record.path === sourceFile)) {
+        return "Bài cũ đang ở " + sourceFile +
+            ". Dùng xuất thủ công để thay tệp đó bằng thư mục bài và ảnh trong cùng một commit.";
+    }
+    if (typeof header.slug === "string" && !header.url) {
+        const route = "/p/" + encodeURIComponent(header.slug) + "/";
+        const duplicate = records.find((record) => record.url.endsWith(route) && record.path !== path);
+        if (duplicate) {
+            return "Đường dẫn bài trùng với " + duplicate.path +
+                ". Dùng tiêu đề khác cho bài mới hoặc thay tệp cũ đúng vị trí.";
+        }
+    }
+    return "";
 }
 
 function insertMarkdown(action, selected) {
@@ -293,6 +373,11 @@ function startEditor(editor) {
     const attachmentStatus = find("editor-attachment-status");
     const bundleHelp = find("editor-bundle-help");
     const uploadBundle = find("editor-upload-bundle");
+    const prepareButton = find("editor-prepare-post");
+    const publicationStatus = find("editor-publication-status");
+    const publicationResult = find("editor-publication-result");
+    const publicationPath = find("editor-publication-path");
+    const published = publishedRecords(editor);
     const modes = [...editor.querySelectorAll("[data-editor-mode]")];
     const inputs = Object.fromEntries(["title", "description", "categories", "tags", "date"].flatMap((key) => {
         const field = find("editor-" + key);
@@ -311,6 +396,8 @@ function startEditor(editor) {
     let indexedBody;
     let attachmentPaths = [];
     let exportingBundle = false;
+    let preparingPost = false;
+    let publicationRevision = 0;
 
     try {
         storage = window.localStorage;
@@ -332,6 +419,20 @@ function startEditor(editor) {
         status.dataset.state = state;
     }
 
+    function showPublication({ text, state }) {
+        if (!publicationStatus) return;
+        if (publicationStatus.textContent !== text) publicationStatus.textContent = text;
+        publicationStatus.dataset.state = state;
+    }
+
+    function syncPublication() {
+        publicationRevision++;
+        if (publicationResult) publicationResult.hidden = true;
+        if (!publicationStatus) return;
+        const now = Date.now();
+        showPublication(publicationReadiness(active.value, publicationHeader(active.value, now), now));
+    }
+
     function currentAttachments() {
         if (active.value.body !== indexedBody) {
             indexedBody = active.value.body;
@@ -344,8 +445,9 @@ function startEditor(editor) {
         const hasAttachments = paths.length > 0;
         if (bundleButton) {
             bundleButton.hidden = !hasAttachments;
-            bundleButton.disabled = exportingBundle;
+            bundleButton.disabled = exportingBundle || preparingPost;
         }
+        if (prepareButton) prepareButton.disabled = exportingBundle || preparingPost;
         if (bundleHelp) bundleHelp.hidden = !hasAttachments;
         if (uploadBundle) uploadBundle.hidden = !hasAttachments;
         if (!attachmentStatus) return;
@@ -359,7 +461,7 @@ function startEditor(editor) {
         } else if (paths.some((path) => !localImages.has(path))) {
             attachmentStatus.textContent = "Đang kiểm tra ảnh đính kèm…";
         } else {
-            attachmentStatus.textContent = paths.length + " ảnh đính kèm. Tải gói ZIP để lấy cả bài và ảnh.";
+            attachmentStatus.textContent = paths.length + " ảnh đính kèm sẽ có trong gói ZIP.";
         }
         attachmentStatus.dataset.state = missing ? "error" : "saved";
     }
@@ -443,6 +545,7 @@ function startEditor(editor) {
         refreshList();
         showFileName();
         updatePreview();
+        syncPublication();
         rememberSelection();
     }
 
@@ -488,12 +591,14 @@ function startEditor(editor) {
         }
     }
 
-    function collectChanges() {
+    function collectChanges(event) {
         active.value.body = body.value;
         for (const [key, field] of Object.entries(inputs)) active.value[key] = field.value;
+        if (inputs.date && event?.target === inputs.date) active.value.dateEdited = Boolean(inputs.date.value);
         if (amendDraftStatus) active.value.isDraft = amendDraftStatus.checked;
         active.value.updatedAt = Date.now();
         showFileName();
+        syncPublication();
         clearTimeout(previewTimer);
         clearTimeout(saveTimer);
         previewTimer = window.setTimeout(updatePreview, 140);
@@ -516,7 +621,7 @@ function startEditor(editor) {
 
     async function downloadBundle() {
         const paths = currentAttachments();
-        if (!paths.length || exportingBundle) return;
+        if (!paths.length || exportingBundle || preparingPost) return;
 
         exportingBundle = true;
         showAttachmentStatus(paths);
@@ -531,6 +636,83 @@ function startEditor(editor) {
             announce(error instanceof Error ? error.message : "Không tạo được gói bài viết và ảnh.", "error");
         } finally {
             exportingBundle = false;
+            showAttachmentStatus(currentAttachments());
+        }
+    }
+
+    async function preparePublication() {
+        if (preparingPost || exportingBundle) return;
+
+        const draft = active.value;
+        const now = Date.now();
+        const header = publicationHeader(draft, now);
+        const readiness = publicationReadiness(draft, header, now);
+        if (readiness.state === "draft" || readiness.state === "error") {
+            showPublication(readiness);
+            if (readiness.field === "title") inputs.title?.focus();
+            if (readiness.field === "body") {
+                setMode("write");
+                body.focus();
+            }
+            if (readiness.field === "draft") amendDraftStatus?.focus();
+            return;
+        }
+
+        const paths = currentAttachments();
+        const { filename, slug } = fileInfo({ ...draft, date: dateForInput(header.date) });
+        if (!paths.length && /^_?index\.(?:md|markdown)$/i.test(filename)) {
+            showPublication({
+                state: "error",
+                text: "Tệp " + filename + " cần nằm trong thư mục gốc của bài. Dùng xuất Markdown thủ công để cập nhật tệp đó.",
+            });
+            return;
+        }
+
+        const revision = publicationRevision;
+        preparingPost = true;
+        if (publicationResult) publicationResult.hidden = true;
+        showAttachmentStatus(paths);
+        showPublication({ state: "ready", text: "Đang chuẩn bị tệp đăng bài…" });
+        try {
+            const markdown = exportMarkdown(draft, header);
+            const format = paths.length ? "zip" : "md";
+            let output;
+            if (format === "zip") {
+                output = await exportEditorBundle({ filename, slug, markdown, paths });
+            } else {
+                output = { filename, blob: new Blob([markdown], { type: "text/markdown;charset=utf-8" }) };
+            }
+            if (revision !== publicationRevision) return;
+            const path = "content/post/" + (format === "zip"
+                ? output.filename.replace(/\.zip$/i, "") + "/index.md"
+                : output.filename);
+            const conflict = publicationConflict(published, path, draft, header);
+            if (conflict) {
+                showPublication({ state: "error", text: conflict });
+                return;
+            }
+
+            downloadFile(output.blob, output.filename);
+            if (publicationPath) publicationPath.textContent = path;
+            if (publicationResult) {
+                publicationResult.dataset.format = format;
+                publicationResult.hidden = false;
+            }
+            const update = published.some((record) => record.path === path);
+            showPublication({
+                state: readiness.state,
+                text: readiness.state === "scheduled"
+                    ? "Đã tải tệp. " + readiness.text
+                    : update
+                        ? "Đã tải tệp cập nhật. Kiểm tra đúng vị trí trước khi commit trên GitHub."
+                        : "Đã tải tệp bài mới. Tiếp tục tải lên và commit trên GitHub.",
+            });
+        } catch (error) {
+            if (revision === publicationRevision) {
+                showPublication({ state: "error", text: error instanceof Error ? error.message : "Không chuẩn bị được bài." });
+            }
+        } finally {
+            preparingPost = false;
             showAttachmentStatus(currentAttachments());
         }
     }
@@ -769,6 +951,7 @@ function startEditor(editor) {
 
     find("editor-download").addEventListener("click", downloadDraft);
     bundleButton?.addEventListener("click", downloadBundle);
+    prepareButton?.addEventListener("click", preparePublication);
     find("editor-copy").addEventListener("click", async () => {
         const ok = await copy(exportMarkdown(active.value));
         announce(ok ? "Đã sao chép Markdown." : "Không sao chép được. Hãy tải tệp Markdown.", ok ? "saved" : "error");
@@ -787,7 +970,15 @@ function startEditor(editor) {
         if (document.visibilityState === "hidden") flushPending();
     });
 
-    openDraft(drafts.get(selectedId) ?? [...drafts.values()].sort((a, b) => b.value.updatedAt - a.value.updatedAt)[0] ?? makeRecord());
+    const editorUrl = new URL(window.location.href);
+    const startFresh = editorUrl.searchParams.get("new") === "1";
+    if (startFresh) {
+        editorUrl.searchParams.delete("new");
+        window.history.replaceState(window.history.state, "", editorUrl);
+    }
+    openDraft(startFresh
+        ? makeRecord()
+        : drafts.get(selectedId) ?? [...drafts.values()].sort((a, b) => b.value.updatedAt - a.value.updatedAt)[0] ?? makeRecord());
     setMode("write");
     enablePreviewImages(preview);
     setupImageDialog();

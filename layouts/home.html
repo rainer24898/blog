@@ -25,20 +25,25 @@
                 {{ end }}
             </div>
         </header>
-
-        {{ partial "blog/topics.html" . }}
     {{ end }}
 
     <section class="blog-section" aria-labelledby="home-posts">
         <div class="blog-section-heading">
             {{ if eq $paginator.PageNumber 1 }}
-                <h2 id="home-posts">Bài viết mới</h2>
+                <h2 id="home-posts">Bài viết mới nhất</h2>
             {{ else }}
                 <h1 id="home-posts">Bài viết</h1>
             {{ end }}
-            {{ with site.GetPage "/page/archives" }}
-                <a href="{{ .RelPermalink }}">Xem lưu trữ</a>
-            {{ end }}
+            <div class="blog-section-actions">
+                {{ with site.GetPage "/page/archives" }}
+                    <a href="{{ .RelPermalink }}">Xem lưu trữ</a>
+                {{ end }}
+                {{ if eq $paginator.PageNumber 1 }}
+                    {{ with site.GetPage "/page/editor" }}
+                        <a class="blog-new-post" href="{{ .RelPermalink }}?new=1">Viết bài mới</a>
+                    {{ end }}
+                {{ end }}
+            </div>
         </div>
         <div class="article-list blog-post-list">
             {{ range $paginator.Pages }}
@@ -48,5 +53,8 @@
     </section>
 
     {{ partial "pagination.html" . }}
+    {{ if eq $paginator.PageNumber 1 }}
+        {{ partial "blog/topics.html" . }}
+    {{ end }}
     {{ partial "footer/footer" . }}
 {{ end }}

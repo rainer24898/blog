@@ -5,10 +5,19 @@
 {{ end }}
 
 {{ define "main" }}
-    <section class="editor-shell" data-blog-editor data-mode="write" aria-labelledby="editor-page-title">
+    {{- $publishedPosts := slice -}}
+    {{- range where site.RegularPages "Section" "post" -}}
+        {{- $post := . -}}
+        {{- with .File -}}
+            {{- $path := printf "content/%s" (replace .Path "\\" "/") -}}
+            {{- $publishedPosts = $publishedPosts | append (dict "path" $path "url" $post.RelPermalink) -}}
+        {{- end -}}
+    {{- end -}}
+
+    <section class="editor-shell" data-blog-editor data-mode="write" data-published-posts="{{ jsonify $publishedPosts }}" aria-labelledby="editor-page-title">
         <header class="editor-page-heading">
             <h1 id="editor-page-title">{{ .Title }}</h1>
-            <p>Bản nháp lưu trong trình duyệt này. Xuất bài để đăng lên blog.</p>
+            <p>Bản nháp lưu trong trình duyệt này. <a class="editor-publish-jump" href="#editor-publish">Đến phần đăng bài</a></p>
         </header>
 
         <p class="editor-loading" data-editor-loading role="status">Đang mở trình soạn thảo…</p>
@@ -46,10 +55,6 @@
                             <input id="editor-description" type="text" maxlength="300" data-editor-description>
                         </div>
                         <div class="editor-field">
-                            <label for="editor-date">Ngày đăng</label>
-                            <input id="editor-date" type="date" data-editor-date>
-                        </div>
-                        <div class="editor-field">
                             <label for="editor-categories">Chủ đề</label>
                             <input id="editor-categories" type="text" placeholder="Linux, 5G NR" data-editor-categories aria-describedby="editor-taxonomy-hint">
                         </div>
@@ -58,10 +63,6 @@
                             <input id="editor-tags" type="text" placeholder="MIMO, kernel" data-editor-tags aria-describedby="editor-taxonomy-hint">
                         </div>
                         <p id="editor-taxonomy-hint" class="editor-hint">Phân cách các chủ đề và thẻ bằng dấu phẩy.</p>
-                        <label class="editor-checkbox">
-                            <input type="checkbox" data-editor-is-draft>
-                            Giữ ở dạng bản nháp trong Hugo
-                        </label>
                     </div>
                 </details>
             </div>
@@ -107,31 +108,73 @@
                 </div>
             </div>
 
-            <footer class="editor-publish">
-                <div class="editor-publish-summary">
-                    <h2>Xuất bài</h2>
+            <section class="editor-publish" id="editor-publish" aria-labelledby="editor-publish-heading" tabindex="-1">
+                <div class="editor-publication-heading">
+                    <h2 id="editor-publish-heading">Đăng bài lên blog</h2>
+                    <p class="editor-hint">Chuẩn bị bài để tải lên kho GitHub của blog.</p>
+                </div>
+
+                <div class="editor-publication-controls">
+                    <div class="editor-field editor-publication-date">
+                        <label for="editor-date">Ngày đăng</label>
+                        <input id="editor-date" type="date" data-editor-date>
+                    </div>
+                    <label class="editor-checkbox">
+                        <input type="checkbox" data-editor-is-draft>
+                        Giữ ở dạng bản nháp trong Hugo
+                    </label>
+                </div>
+                <p class="editor-hint editor-publication-status" data-editor-publication-status role="status"></p>
+
+                <div class="editor-publication-actions">
+                    <button class="editor-button editor-button-primary" type="button" data-editor-prepare-post>Chuẩn bị tệp đăng</button>
                     <p class="editor-hint" data-editor-status role="status"></p>
                 </div>
-                <div class="editor-actions">
-                    <button class="editor-button" type="button" data-editor-copy>Sao chép Markdown</button>
-                    <button class="editor-button editor-button-primary" type="button" data-editor-download>Tải tệp .md</button>
-                    <button class="editor-button editor-button-primary" type="button" data-editor-download-bundle hidden>Tải gói ZIP</button>
-                </div>
                 <p class="editor-hint editor-attachment-status" data-editor-attachment-status role="status"></p>
-                <div class="editor-filename">
-                    <code data-editor-filename aria-label="Tên tệp xuất"></code>
-                    <button class="editor-button editor-button-quiet" type="button" data-editor-copy-filename>Sao chép tên tệp</button>
+
+                <div class="editor-publication-result" data-editor-publication-result data-format="md" hidden>
+                    <h3>Tải lên GitHub</h3>
+                    <p class="editor-publication-destination">
+                        <span class="editor-hint">Đường dẫn bài trong kho mã</span>
+                        <code data-editor-publication-path></code>
+                    </p>
+                    <p class="editor-hint" data-editor-upload-format="md">Chọn tệp <code>.md</code> vừa tải xuống trên trang tải lên của GitHub.</p>
+                    <p class="editor-hint" data-editor-upload-format="zip">Giải nén ZIP rồi kéo cả thư mục chứa <code>index.md</code> và <code>images/</code> vào trang tải lên của GitHub.</p>
+                    <p class="editor-hint">Đăng nhập bằng tài khoản có quyền ghi và chọn <strong>Commit changes</strong> để chạy quy trình triển khai GitHub Pages.</p>
+                    <div class="editor-actions">
+                        {{ with .Params.publishBundleURL }}
+                            <a class="editor-button editor-button-primary" href="{{ . }}" target="_blank" rel="noopener noreferrer"
+                                data-editor-publication-upload>Mở trang tải lên GitHub</a>
+                        {{ end }}
+                        {{ with .Params.publishActionsURL }}
+                            <a class="editor-button" href="{{ . }}" target="_blank" rel="noopener noreferrer">Xem tiến độ triển khai</a>
+                        {{ end }}
+                    </div>
                 </div>
-                <p class="editor-hint editor-publish-instructions" data-editor-bundle-help hidden>Giải nén gói ZIP rồi tải thư mục chứa <code>index.md</code> và <code>images/</code> vào <code>content/post</code> trên GitHub. Khi cập nhật bài cũ, thay tệp Markdown cũ bằng thư mục này để tránh trùng đường dẫn.</p>
-                {{ with .Params.publishURL }}
-                    <p class="editor-hint editor-publish-instructions editor-file-publish">Để đăng bài, tạo một tệp trong <code>content/post</code> trên GitHub với tên của tệp đã tải, dán Markdown rồi commit. GitHub Actions sẽ chạy quy trình triển khai.</p>
-                    <a class="editor-button editor-file-publish" href="{{ . }}" target="_blank" rel="noopener noreferrer">Mở GitHub</a>
-                {{ end }}
-                {{ with .Params.publishBundleURL }}
-                    <a class="editor-button" href="{{ . }}" target="_blank" rel="noopener noreferrer"
-                        data-editor-upload-bundle hidden>Tải thư mục lên GitHub</a>
-                {{ end }}
-            </footer>
+
+                <details class="editor-details editor-manual-export">
+                    <summary>Xuất thủ công</summary>
+                    <div class="editor-manual-export-content">
+                        <div class="editor-actions">
+                            <button class="editor-button" type="button" data-editor-copy>Sao chép Markdown</button>
+                            <button class="editor-button" type="button" data-editor-download>Tải tệp .md</button>
+                            <button class="editor-button" type="button" data-editor-download-bundle hidden>Tải gói ZIP</button>
+                        </div>
+                        <div class="editor-filename">
+                            <code data-editor-filename aria-label="Tên tệp xuất"></code>
+                            <button class="editor-button editor-button-quiet" type="button" data-editor-copy-filename>Sao chép tên tệp</button>
+                        </div>
+                        <p class="editor-hint" data-editor-bundle-help hidden>Giải nén ZIP rồi tải cả thư mục bài vào <code>content/post</code>. Nếu đang đổi bài cũ sang thư mục, hãy thay tệp Markdown cũ để tránh trùng đường dẫn.</p>
+                        {{ with .Params.publishURL }}
+                            <a class="editor-button editor-file-publish" href="{{ . }}" target="_blank" rel="noopener noreferrer">Tạo tệp trên GitHub</a>
+                        {{ end }}
+                        {{ with .Params.publishBundleURL }}
+                            <a class="editor-button" href="{{ . }}" target="_blank" rel="noopener noreferrer"
+                                data-editor-upload-bundle hidden>Tải thư mục lên GitHub</a>
+                        {{ end }}
+                    </div>
+                </details>
+            </section>
 
             <dialog class="editor-image-dialog" id="editor-image-dialog" data-editor-image-dialog data-source="file"
                 aria-labelledby="editor-image-dialog-title">

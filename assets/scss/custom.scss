@@ -240,6 +240,20 @@ body {
     text-decoration: underline;
 }
 
+.blog-section-actions {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: .5rem 1.2rem;
+}
+
+.blog-section-heading .blog-new-post {
+    min-block-size: 4.4rem;
+    padding-inline: 1.2rem;
+    border-radius: .9rem;
+    background: var(--blog-accent-soft);
+}
+
 .blog-topic-list {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(min(100%, 15.6rem), 1fr));
