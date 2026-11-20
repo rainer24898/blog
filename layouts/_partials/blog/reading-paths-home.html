@@ -1,0 +1,17 @@
+{{- $paths := partialCached "blog/reading-paths-data.html" . .Language.Lang -}}
+{{- $landing := site.GetPage "/page/reading-paths" -}}
+{{- if and $landing $paths -}}
+    <section class="blog-section blog-guides" aria-labelledby="home-guides">
+        <div class="blog-section-heading">
+            <h2 id="home-guides">Lộ trình đọc</h2>
+        </div>
+        <ul class="blog-guide-list">
+            {{ range $paths }}
+                <li><a class="blog-guide-card" href="{{ $landing.RelPermalink }}#{{ .slug }}">
+                    <span class="blog-guide-title">{{ .title }}</span>
+                    <span class="blog-guide-description">{{ .description }}</span>
+                </a></li>
+            {{ end }}
+        </ul>
+    </section>
+{{- end -}}

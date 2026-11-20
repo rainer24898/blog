@@ -17,14 +17,20 @@
                 {{ with site.GetPage "/page/search" }}
                     {{ partial "blog/search-form.html" (dict "page" . "id" "home-search" "placeholder" "Tìm MIMO, Linux…") }}
                 {{ end }}
-                {{ with .OutputFormats.Get "RSS" }}
-                    <a class="blog-rss" href="{{ .RelPermalink }}" type="{{ .MediaType.Type }}">
-                        {{ partial "helper/icon" "rss" }}
-                        Theo dõi qua RSS
-                    </a>
-                {{ end }}
+                <div class="blog-hero-actions">
+                    {{ with site.GetPage "/page/reading-paths" }}
+                        <a class="blog-guides-cta" href="{{ .RelPermalink }}">Xem lộ trình đọc</a>
+                    {{ end }}
+                    {{ with .OutputFormats.Get "RSS" }}
+                        <a class="blog-rss" href="{{ .RelPermalink }}" type="{{ .MediaType.Type }}">
+                            {{ partial "helper/icon" "rss" }}
+                            Theo dõi qua RSS
+                        </a>
+                    {{ end }}
+                </div>
             </div>
         </header>
+        {{ partial "blog/reading-resume.html" . }}
     {{ end }}
 
     <section class="blog-section" aria-labelledby="home-posts">
@@ -45,7 +51,7 @@
                 {{ end }}
             </div>
         </div>
-        <div class="article-list blog-post-list">
+        <div class="article-list blog-post-list{{ if eq $paginator.PageNumber 1 }} blog-post-list--featured{{ end }}">
             {{ range $paginator.Pages }}
                 {{ partial "article-list/default" . }}
             {{ end }}
@@ -54,6 +60,7 @@
 
     {{ partial "pagination.html" . }}
     {{ if eq $paginator.PageNumber 1 }}
+        {{ partial "blog/reading-paths-home.html" . }}
         {{ partial "blog/topics.html" . }}
     {{ end }}
     {{ partial "footer/footer" . }}

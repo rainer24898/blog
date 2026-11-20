@@ -1,0 +1,60 @@
+- slug: mimo
+  title: MIMO trong 4G LTE và 5G NR
+  description: Từ ma trận kênh và spatial layer đến CSI, beamforming và lập lịch nhiều UE.
+  steps:
+    - post: /post/2026-11-11-SISO-MIMO
+      note: Phân biệt SISO, SIMO, MISO và MIMO. Xem cách rank của kênh giới hạn số luồng không gian.
+    - post: /post/2026-04-04-Layer-maping
+      note: Theo dõi đường đi từ codeword qua spatial layer, precoding và antenna port trong LTE.
+    - post: /post/2025-12-26-CSI
+      note: Tìm hiểu UE đo kênh và báo cáo RI, PMI, CQI cho quá trình truyền downlink trong NR.
+    - post: /post/2026-04-05-LTE_TM9_Chi_Tiet_CSI-RS_RI_PMI_CQI_Precoding_DM-RS_PDSCH
+      note: Áp các khái niệm vào luồng LTE TM9, từ CSI-RS, phản hồi CSI đến DM-RS và giải mã PDSCH.
+    - post: /post/Beamforming_4G_LTE_5G_NR_Deep_Technical_Research
+      note: Nối trọng số antenna và hướng chùm tia với đo lường, chọn beam và phục hồi beam.
+    - post: /post/MU_MIMO_4G_LTE_5G_NR_Deep_Technical_Research
+      note: Xem scheduler ghép các UE trên cùng tài nguyên và cách precoding hạn chế nhiễu giữa các UE.
+
+- slug: 5g-nr-phy
+  title: Lớp vật lý 5G NR
+  description: Từ khung vô tuyến, slot và BWP đến kênh điều khiển, kênh dữ liệu và lưới tài nguyên.
+  steps:
+    - post: /post/2025-12-19-5G_NR_Physical_Layer_Overview#U2013Downlink
+      note: Bắt đầu với numerology, lưới tài nguyên và các kênh vật lý trên đường xuống.
+    - post: /post/2025-12-24-SSB
+      note: Xem UE dùng PSS, SSS và PBCH để đồng bộ và đọc thông tin cơ bản của cell.
+    - post: /post/2025-12-24-PDCCH
+      note: Tìm hiểu CORESET, search space và DCI mà UE dùng để nhận cấp phát tài nguyên.
+    - post: /post/2025-12-24-PDSCH
+      note: Theo luồng truyền dữ liệu đường xuống từ transport block đến symbol trên lưới tài nguyên.
+    - post: /post/2025-12-20-5G_NR_Physical_Layer_Overview#U2013UpLink
+      note: Chuyển sang đường lên để thấy vai trò của PRACH, PUCCH và PUSCH trong cùng hệ thống.
+    - post: /post/2026-01-02-PRACH
+      note: Phân tích preamble và tài nguyên dùng khi UE bắt đầu truy nhập ngẫu nhiên.
+    - post: /post/2025-12-27-PUCCH
+      note: Xem cách UE gửi thông tin điều khiển như HARQ-ACK, SR và CSI.
+    - post: /post/2026-01-01-PUSCH
+      note: Theo dõi quá trình truyền dữ liệu đường lên, gồm mapping, DM-RS và xử lý ở gNB.
+    - post: /post/Resource_Mapping_4G_LTE_5G_NR_Deep_Technical_Research
+      note: Tổng hợp bằng lưới RE và PRB, vị trí DM-RS và ví dụ mapping PDSCH/PUSCH.
+
+- slug: linux-driver-mang
+  title: Driver mạng Linux
+  description: Từ ranh giới user space và kernel space đến cấu trúc driver, vòng đời thiết bị và luồng gói tin.
+  steps:
+    - post: /post/2024-12-16-User_spcace_and_kernel_space
+      note: Xác định mã ứng dụng và driver chạy ở đâu, rồi xem cách hai phía giao tiếp.
+    - post: /post/2024-12-2- Driver_data_structures
+      note: Làm quen với net_device, net_device_ops và sk_buff trước khi đọc các callback cụ thể.
+    - post: /post/2024-12-3-Socket_Buffer_Allocation
+      note: Xem driver cấp phát socket buffer và bố trí dữ liệu gói tin trong bộ nhớ.
+    - post: /post/2024-12-3- Mechanism_callback_in_net_device
+      note: Tìm hiểu cách network stack gọi các thao tác mà driver đăng ký trong net_device_ops.
+    - post: /post/2024-12-12-ndo_open_and_ndo_stop
+      note: Theo dõi điểm mở và dừng interface, gồm cấp phát tài nguyên và dọn dẹp.
+    - post: /post/2024-12-14-Interrupt_in_network_driver
+      note: Xem luồng xử lý ngắt, SoftIRQ và NAPI trong driver NIC.
+    - post: /post/2024-12-14-Packet_handling
+      note: Ghép các thành phần lại để theo dõi gói tin qua driver trên đường nhận và đường gửi.
+    - post: /post/2024-12-1-Network_driver
+      note: Đọc ví dụ viết và thử một virtual network driver để đối chiếu với luồng xử lý đã học.

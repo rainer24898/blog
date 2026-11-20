@@ -1,0 +1,12 @@
+{{ if .IsHome }}
+    <section class="blog-reading-resume" data-reading-resume aria-labelledby="reading-resume-heading" hidden>
+        <h2 id="reading-resume-heading">{{ cond (eq .Language.Lang "vi") "Tiếp tục đọc" "Continue reading" }}</h2>
+        <a data-reading-link aria-labelledby="reading-resume-heading reading-resume-title">
+            <span id="reading-resume-title"></span>
+        </a>
+    </section>
+{{ end }}
+
+{{- $script := resources.Get "js/reading-position.js" | js.Build (dict "minify" hugo.IsProduction) | fingerprint -}}
+<script src="{{ $script.RelPermalink }}" data-reading-base="{{ site.Home.RelPermalink }}"
+    {{- if not .IsHome }} data-reading-post="{{ .RelPermalink }}" data-reading-title="{{ .Title }}"{{ end }} defer></script>

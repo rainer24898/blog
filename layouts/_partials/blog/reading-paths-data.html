@@ -1,0 +1,14 @@
+{{- $paths := slice -}}
+{{- range hugo.Data.readingPaths -}}
+    {{- $steps := slice -}}
+    {{- range .steps -}}
+        {{- $note := .note -}}
+        {{- with site.GetPage .post -}}
+            {{- $steps = $steps | append (dict "page" . "note" $note) -}}
+        {{- end -}}
+    {{- end -}}
+    {{- if $steps -}}
+        {{- $paths = $paths | append (dict "slug" .slug "title" .title "description" .description "steps" $steps) -}}
+    {{- end -}}
+{{- end -}}
+{{- return $paths -}}

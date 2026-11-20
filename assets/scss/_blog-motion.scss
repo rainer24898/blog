@@ -28,6 +28,11 @@
     }
 }
 
+@keyframes blog-progress-entry {
+    from { opacity: .55; }
+    to { opacity: 1; }
+}
+
 @media (prefers-reduced-motion: no-preference) {
     .blog-intro-copy > :is(h1, p) {
         animation: blog-settle 360ms ease-out backwards;
@@ -38,7 +43,8 @@
     }
 
     .blog-topic-card {
-        transition: translate 160ms ease-out, border-color 160ms ease, box-shadow 160ms ease;
+        transition: translate 160ms ease-out, scale 120ms ease-out, border-color 160ms ease,
+            box-shadow 160ms ease;
     }
 
     .blog-post-list > article {
@@ -53,8 +59,40 @@
         transition: scale 220ms ease-out;
     }
 
-    :is(#main-menu > li > a, #main-menu #dark-mode-toggle, .menu-social a, .article-back-to-top) {
+    :is(#main-menu > li > a, #main-menu #dark-mode-toggle, .menu-social a) {
         transition: background-color 140ms ease, color 140ms ease;
+    }
+
+    :is(
+        .blog-hero-actions a,
+        .blog-guide-card,
+        .blog-section-actions a,
+        .blog-reading-resume [data-reading-link],
+        .reading-paths-index a,
+        .reading-paths-step a,
+        .reading-paths-neighbors a,
+        .mermaid-viewer button
+    ) {
+        transition: background-color 150ms ease, border-color 150ms ease, color 150ms ease,
+            scale 120ms ease-out, box-shadow 150ms ease;
+    }
+
+    :is(
+        .blog-topic-card,
+        .blog-hero-actions a,
+        .blog-guide-card,
+        .blog-new-post,
+        .blog-reading-resume [data-reading-link],
+        .reading-paths-index a,
+        .reading-paths-neighbors a,
+        .article-back-to-top,
+        .mermaid-viewer button
+    ):active {
+        scale: .985;
+    }
+
+    .article-back-to-top {
+        transition: background-color 140ms ease, color 140ms ease, scale 120ms ease-out;
     }
 
     :is(.blog-rss, .blog-search-form button) svg {
@@ -84,6 +122,31 @@
 
     .article-back-to-top:not([hidden]):focus-visible {
         animation-duration: 0s;
+    }
+
+    .article-reading-progress:not([hidden]) {
+        animation: blog-progress-entry 180ms ease-out;
+    }
+
+    :where(.blog-reading-resume:not([hidden]), .mermaid-viewer[open] .mermaid-viewer-header) {
+        animation: blog-settle 200ms ease-out;
+    }
+
+    .blog-reading-resume:focus-within {
+        animation-duration: 0s;
+    }
+
+    // Keep these sections readable and static in browsers without one-shot scroll triggers.
+    @supports (animation-trigger: --blog-entry play-once) and (timeline-trigger: --blog-entry view() entry 10% exit 100%) {
+        :is(.blog-guide-card, .blog-topic-list > li, .reading-paths-section:nth-of-type(n + 2)) {
+            animation: blog-settle 260ms ease-out backwards;
+            timeline-trigger: --blog-entry view() entry 10% exit 100%;
+            animation-trigger: --blog-entry play-once;
+        }
+
+        :is(.blog-guide-card, .blog-topic-list > li, .reading-paths-section:nth-of-type(n + 2)):focus-within {
+            animation-duration: 0s;
+        }
     }
 }
 

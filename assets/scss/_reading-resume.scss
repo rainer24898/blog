@@ -1,0 +1,37 @@
+.blog-reading-resume {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: baseline;
+    column-gap: 1.6rem;
+    row-gap: .4rem;
+    padding: 1.3rem clamp(1.4rem, 3vw, 2.4rem);
+    border: 1px solid var(--blog-border, var(--card-separator-color));
+    border-radius: var(--card-border-radius);
+    background: var(--card-background);
+}
+
+.blog-reading-resume[hidden] {
+    display: none;
+}
+
+.blog-reading-resume h2 {
+    margin: 0;
+    color: var(--card-text-color-secondary);
+    font-size: 1.4rem;
+    font-weight: 600;
+}
+
+.blog-reading-resume a {
+    padding-block: .4rem;
+    border-radius: .4rem;
+    font-size: 1.6rem;
+    font-weight: 650;
+    overflow-wrap: anywhere;
+    text-decoration: underline;
+    text-underline-offset: .2em;
+
+    &:focus-visible {
+        outline: 2px solid var(--accent-color);
+        outline-offset: 3px;
+    }
+}

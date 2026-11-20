@@ -1,0 +1,40 @@
+{{- $current := .RelPermalink -}}
+{{- $matches := slice -}}
+{{- range partialCached "blog/reading-paths-data.html" . .Language.Lang -}}
+    {{- $path := . -}}
+    {{- range $index, $step := .steps -}}
+        {{- if eq $step.page.RelPermalink $current -}}
+            {{- $matches = $matches | append (dict "path" $path "index" $index) -}}
+        {{- end -}}
+    {{- end -}}
+{{- end -}}
+{{- $landing := site.GetPage "/page/reading-paths" -}}
+{{- if and $landing $matches -}}
+    <nav class="reading-paths-navigation" aria-labelledby="reading-paths-navigation-title">
+        <h2 id="reading-paths-navigation-title">Lộ trình đọc</h2>
+        {{ range $matches }}
+            {{ $steps := .path.steps }}
+            {{ $position := add .index 1 }}
+            <div class="reading-paths-context">
+                <h3><a href="{{ $landing.RelPermalink }}#{{ .path.slug }}">{{ .path.title }}</a></h3>
+                <p>Bài {{ $position }} / {{ len $steps }}</p>
+                <ul class="reading-paths-neighbors">
+                    {{ if gt .index 0 }}
+                        {{ $previous := (index $steps (sub .index 1)).page }}
+                        <li><a href="{{ $previous.RelPermalink }}" rel="prev">
+                            <span>Bài trước</span>
+                            {{ $previous.LinkTitle }}
+                        </a></li>
+                    {{ end }}
+                    {{ if lt $position (len $steps) }}
+                        {{ $next := (index $steps $position).page }}
+                        <li><a href="{{ $next.RelPermalink }}" rel="next">
+                            <span>Bài tiếp theo</span>
+                            {{ $next.LinkTitle }}
+                        </a></li>
+                    {{ end }}
+                </ul>
+            </div>
+        {{ end }}
+    </nav>
+{{- end -}}

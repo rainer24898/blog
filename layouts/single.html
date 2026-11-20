@@ -29,9 +29,14 @@
 {{ define "main" }}
     {{ if eq .Section "post" }}
         {{ partialCached "blog/article-navigation.html" . .Language.Lang }}
+        {{ partial "blog/reading-resume.html" . }}
     {{ end }}
 
     {{ partial "article/article.html" . }}
+
+    {{ if eq .Section "post" }}
+        {{ partial "blog/reading-paths-navigation.html" . }}
+    {{ end }}
 
     {{ if .Params.links }}
         {{ partial "article/components/links" . }}

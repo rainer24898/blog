@@ -2,6 +2,9 @@
   "title": "RESOURCE MAPPING TRONG 4G LTE / 5G NR",
   "date": "2026-11-20",
   "draft": false,
+  "description": "Từ lưới RE và PRB đến cách PDSCH, PUSCH và các tín hiệu tham chiếu ánh xạ tài nguyên trong LTE và NR.",
+  "categories": ["4G LTE", "5G NR"],
+  "tags": ["Resource Mapping", "PHY"],
   "math": true
 }
 

@@ -1,0 +1,32 @@
+{{ define "main" }}
+    {{ $paths := partialCached "blog/reading-paths-data.html" . .Language.Lang }}
+    <header class="reading-paths-header">
+        <h1>{{ .Title }}</h1>
+        <p>{{ .Description }}</p>
+        <nav class="reading-paths-index" aria-label="Chọn lộ trình đọc">
+            <ul>
+                {{ range $paths }}
+                    <li><a href="#{{ .slug }}">{{ .title }}</a></li>
+                {{ end }}
+            </ul>
+        </nav>
+    </header>
+
+    {{ range $paths }}
+        <section class="reading-paths-section" id="{{ .slug }}" aria-labelledby="reading-path-{{ .slug }}" tabindex="-1">
+            <h2 id="reading-path-{{ .slug }}">{{ .title }}</h2>
+            <p>{{ .description }}</p>
+
+            <ol class="reading-paths-steps">
+                {{ range .steps }}
+                    <li class="reading-paths-step">
+                        <a href="{{ .page.RelPermalink }}">{{ .page.LinkTitle }}</a>
+                        <p>{{ .note }}</p>
+                    </li>
+                {{ end }}
+            </ol>
+        </section>
+    {{ end }}
+
+    {{ partialCached "footer/footer" . }}
+{{ end }}
