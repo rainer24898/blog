@@ -1,0 +1,5 @@
+{{- if .Store.Get "hasMermaid" -}}
+    {{- partial "blog/mermaid-viewer.html" . -}}
+    {{- $script := resources.Get "js/article-mermaid.js" | js.Build (dict "minify" hugo.IsProduction) | fingerprint -}}
+    <script src="{{ $script.RelPermalink }}" data-article-mermaid data-mermaid-library="{{ partial "blog/mermaid-library.html" . }}" defer></script>
+{{- end -}}

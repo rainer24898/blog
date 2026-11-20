@@ -63,6 +63,15 @@ markdown.renderer.rules.table_open = () =>
     '<div class="editor-table-scroll" role="group" aria-label="Bảng có thể cuộn ngang" tabindex="0"><table>\n';
 markdown.renderer.rules.table_close = () => "</table></div>\n";
 
+const defaultFence = markdown.renderer.rules.fence;
+markdown.renderer.rules.fence = (tokens, index, options, env, renderer) => {
+    const token = tokens[index];
+    if (token.info.trim().split(/\s+/, 1)[0].toLowerCase() !== "mermaid") {
+        return defaultFence(tokens, index, options, env, renderer);
+    }
+    return '<pre class="blog-mermaid-source" data-editor-mermaid><code>' + escape(token.content) + "</code></pre>";
+};
+
 export function renderMarkdown(source, { localImages } = {}) {
     return markdown.render(source, { localImages });
 }

@@ -1,0 +1,10 @@
+{{- .Page.Store.Set "hasMermaid" true -}}
+<figure class="blog-mermaid-frame" data-blog-mermaid>
+    <div class="blog-mermaid-scroll" data-mermaid-content role="group" aria-label="Sơ đồ Mermaid" tabindex="0">
+        <pre class="blog-mermaid-source"><code>{{ .Inner }}</code></pre>
+    </div>
+    <figcaption class="blog-mermaid-toolbar">
+        <p class="blog-mermaid-status" data-mermaid-status role="status" hidden></p>
+        <button class="blog-mermaid-expand" type="button" data-mermaid-expand aria-haspopup="dialog" aria-controls="mermaid-viewer" hidden>Mở rộng sơ đồ</button>
+    </figcaption>
+</figure>

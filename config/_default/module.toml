@@ -9,3 +9,7 @@
     source = "node_modules/katex/dist"
     target = "assets/editor-katex"
     files = ["katex.min.css", "fonts/*"]
+
+[[mounts]]
+    source = "node_modules/mermaid/dist/mermaid.min.js"
+    target = "assets/vendor/mermaid.min.js"

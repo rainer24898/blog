@@ -88,6 +88,7 @@
                             <button class="editor-button" type="button" data-editor-insert="code">Khối mã</button>
                             <button class="editor-button" type="button" data-editor-insert="table">Bảng</button>
                             <button class="editor-button" type="button" data-editor-insert="math">Công thức</button>
+                            <button class="editor-button" type="button" data-editor-insert="mermaid">Sơ đồ</button>
                             <button class="editor-button" type="button" data-editor-insert="image"
                                 aria-haspopup="dialog" aria-controls="editor-image-dialog">Chèn ảnh</button>
                         </div>
@@ -101,9 +102,8 @@
                         </header>
                         <div class="editor-preview-scroll" tabindex="0" role="region" aria-label="Nội dung bài xem trước">
                             <p class="editor-preview-title" data-editor-preview-title></p>
-                            <div class="editor-rendered" data-editor-preview></div>
+                            <div class="editor-rendered" data-editor-preview data-mermaid-library="{{ partial "blog/mermaid-library.html" . }}"></div>
                         </div>
-                        <p class="editor-hint editor-preview-note">Sơ đồ Mermaid hiển thị dưới dạng mã trong bản xem trước.</p>
                     </section>
                 </div>
             </div>

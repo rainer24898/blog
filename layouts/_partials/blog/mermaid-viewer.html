@@ -1,0 +1,17 @@
+<dialog class="mermaid-viewer" id="mermaid-viewer" data-mermaid-viewer aria-labelledby="mermaid-viewer-title">
+    <header class="mermaid-viewer-header">
+        <h2 id="mermaid-viewer-title">Sơ đồ Mermaid</h2>
+        <div class="mermaid-viewer-controls" role="group" aria-label="Điều khiển thu phóng">
+            <button type="button" data-zoom="out" aria-label="Thu nhỏ">−</button>
+            <button type="button" data-zoom="in" aria-label="Phóng to">+</button>
+            <button type="button" data-zoom="actual" aria-label="Kích thước thật 100%">100%</button>
+            <button type="button" data-zoom="fit">Vừa khung</button>
+        </div>
+        <form method="dialog" class="mermaid-viewer-close">
+            <button type="submit" autofocus>Đóng</button>
+        </form>
+    </header>
+    <div class="mermaid-viewer-scroll" role="region" tabindex="0" aria-label="Khung sơ đồ có thể cuộn">
+        <div class="mermaid-viewer-canvas"></div>
+    </div>
+</dialog>

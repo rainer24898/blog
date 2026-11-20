@@ -1,0 +1,133 @@
+:root:has(.mermaid-viewer[open]) {
+    overflow: hidden;
+}
+
+.mermaid-viewer {
+    position: fixed;
+    inset: 0;
+    inline-size: min(128rem, calc(100% - 3.2rem));
+    block-size: min(90rem, calc(100% - 3.2rem));
+    max-inline-size: none;
+    max-block-size: none;
+    margin: auto;
+    padding: 0;
+    border: 1px solid var(--card-separator-color);
+    border-radius: var(--card-border-radius);
+    background: var(--card-background);
+    color: var(--card-text-color-main);
+
+    &[open] {
+        display: grid;
+        grid-template-rows: auto minmax(0, 1fr);
+    }
+
+    &::backdrop {
+        background: rgb(12 23 33 / 72%);
+    }
+
+    button {
+        min-inline-size: 44px;
+        min-block-size: 44px;
+        padding: .6rem 1rem;
+        border: 1px solid var(--card-separator-color);
+        border-radius: .6rem;
+        background: var(--card-background);
+        color: inherit;
+        font-size: 1.4rem;
+        cursor: pointer;
+
+        &:hover:not(:disabled) {
+            background: var(--card-background-selected);
+        }
+
+        &:disabled {
+            opacity: .55;
+            cursor: default;
+        }
+    }
+
+    :is(button, .mermaid-viewer-scroll):focus-visible {
+        outline: 2px solid var(--accent-color);
+        outline-offset: -2px;
+    }
+}
+
+.mermaid-viewer-header {
+    display: grid;
+    grid-template-areas: "title controls close";
+    grid-template-columns: auto 1fr auto;
+    align-items: center;
+    gap: .8rem 1.6rem;
+    padding: max(1.2rem, env(safe-area-inset-top)) max(1.2rem, env(safe-area-inset-right))
+        1.2rem max(1.2rem, env(safe-area-inset-left));
+    border-block-end: 1px solid var(--card-separator-color);
+
+    h2 {
+        grid-area: title;
+        margin: 0;
+        font-size: 1.7rem;
+    }
+}
+
+.mermaid-viewer-controls {
+    grid-area: controls;
+    display: flex;
+    flex-wrap: wrap;
+    gap: .6rem;
+
+    button:is([data-zoom="in"], [data-zoom="out"]) {
+        font-size: 1.8rem;
+    }
+}
+
+.mermaid-viewer-close {
+    grid-area: close;
+}
+
+.mermaid-viewer-scroll {
+    overflow: auto;
+    overscroll-behavior: contain;
+    background: var(--diagram-canvas, var(--card-background));
+    padding: .8rem max(.8rem, env(safe-area-inset-right))
+        max(.8rem, env(safe-area-inset-bottom)) max(.8rem, env(safe-area-inset-left));
+
+    @media (pointer: fine) {
+        &[data-pannable] {
+            cursor: grab;
+        }
+
+        &.is-dragging {
+            cursor: grabbing;
+            user-select: none;
+        }
+    }
+}
+
+.mermaid-viewer-canvas {
+    display: grid;
+    place-items: center;
+    inline-size: max-content;
+    block-size: max-content;
+    min-inline-size: 100%;
+    min-block-size: 100%;
+
+    > svg {
+        display: block;
+        max-inline-size: none !important;
+        max-block-size: none;
+    }
+}
+
+@media (max-width: 640px), (max-height: 480px) {
+    .mermaid-viewer {
+        inline-size: 100%;
+        block-size: 100dvh;
+        border: 0;
+        border-radius: 0;
+    }
+
+    .mermaid-viewer-header {
+        grid-template-areas: "title close" "controls controls";
+        grid-template-columns: 1fr auto;
+    }
+}

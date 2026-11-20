@@ -1,0 +1,2 @@
+{{- $library := resources.Get "vendor/mermaid.min.js" | fingerprint -}}
+{{- return $library.RelPermalink -}}

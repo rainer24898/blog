@@ -1,0 +1,93 @@
+:root {
+    --diagram-canvas: #f7fbff;
+    --diagram-outline: #cdddea;
+    --diagram-grid: rgba(72, 111, 145, .15);
+}
+
+:root[data-scheme="dark"] {
+    --diagram-canvas: #0d1723;
+    --diagram-outline: #30475e;
+    --diagram-grid: rgba(143, 184, 223, .12);
+}
+
+.blog-mermaid-frame {
+    min-inline-size: 0;
+    margin: 2.2rem 0;
+    overflow: hidden;
+    border: 1px solid var(--diagram-outline);
+    border-radius: 1.35rem;
+    background: var(--diagram-canvas);
+}
+
+.blog-mermaid-scroll {
+    min-inline-size: 0;
+    max-inline-size: 100%;
+    overflow: auto;
+    overscroll-behavior-inline: contain;
+    padding: clamp(1.4rem, 2.6vw, 2.6rem);
+    background-color: var(--diagram-canvas);
+    background-image: radial-gradient(circle, var(--diagram-grid) .7px, transparent .9px);
+    background-size: 20px 20px;
+}
+
+.editor-rendered .blog-mermaid-scroll {
+    margin-block: 1.6rem;
+    border: 1px solid var(--diagram-outline);
+    border-radius: 1.05rem;
+}
+
+.blog-mermaid-scroll > svg {
+    display: block;
+    max-inline-size: none;
+    block-size: auto;
+    margin-inline: auto;
+}
+
+.blog-mermaid-scroll > .blog-mermaid-source {
+    margin: 0;
+    padding: 0;
+    background: transparent;
+    font-size: 1.4rem;
+}
+
+.blog-mermaid-toolbar {
+    display: none;
+    justify-content: flex-end;
+    align-items: center;
+    padding: .65rem 1rem;
+    border-block-start: 1px solid var(--diagram-outline);
+    background: var(--blog-panel);
+}
+
+.blog-mermaid-toolbar:has(> :not([hidden])) {
+    display: flex;
+}
+
+.blog-mermaid-status {
+    margin: 0;
+    color: var(--blog-muted);
+    font-size: 1.4rem;
+    line-height: 1.4;
+}
+
+.blog-mermaid-expand {
+    min-block-size: 4.4rem;
+    padding: .6rem 1.2rem;
+    border: 1px solid var(--diagram-outline);
+    border-radius: .85rem;
+    background: var(--blog-accent-soft);
+    color: var(--blog-accent);
+    font-size: 1.4rem;
+    font-weight: 700;
+    cursor: pointer;
+}
+
+.blog-mermaid-expand:hover {
+    border-color: var(--blog-accent);
+}
+
+.blog-mermaid-scroll:focus-visible,
+.blog-mermaid-expand:focus-visible {
+    outline: 2px solid var(--blog-accent);
+    outline-offset: -2px;
+}

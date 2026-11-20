@@ -3,6 +3,8 @@
 @use "search-filters";
 @use "blog-motion";
 @use "editor";
+@use "mermaid";
+@use "mermaid-viewer";
 
 :root {
     --blog-bg: #edf2f5;

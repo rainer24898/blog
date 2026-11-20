@@ -1,6 +1,7 @@
 import { parseDocument } from "yaml";
 import { renderMarkdown, enablePreviewImages, readEditorImagePaths } from "./markdown-preview.js";
 import { storeEditorImage, loadEditorImage, exportEditorBundle } from "./editor-images.js";
+import { createEditorMermaid } from "./editor-mermaid.js";
 
 const storagePrefix = "raiii-editor:v1:draft:";
 const selectionKey = "raiii-editor:v1:selected";
@@ -296,11 +297,14 @@ function insertMarkdown(action, selected) {
         case "link": return "[" + (selected || "Tên liên kết") + "](https://example.com)";
         case "list": return "\n\n" + (selected || "Mục danh sách").split("\n").map((line) => "- " + line).join("\n") + "\n\n";
         case "quote": return "\n\n" + (selected || "Trích dẫn").split("\n").map((line) => "> " + line).join("\n") + "\n\n";
-        case "code": {
+        case "code":
+        case "mermaid": {
             const tick = String.fromCharCode(96);
             const longest = Array.from(selected.matchAll(/(\x60+)/g)).reduce((count, match) => Math.max(count, match[0].length), 2);
             const fence = tick.repeat(longest + 1);
-            return "\n\n" + fence + "text\n" + (selected || "Mã nguồn") + "\n" + fence + "\n\n";
+            const language = action === "mermaid" ? "mermaid" : "text";
+            const example = action === "mermaid" ? "flowchart TD\n    A[Đầu vào] --> B[Xử lý]\n    B --> C[Kết quả]" : "Mã nguồn";
+            return "\n\n" + fence + language + "\n" + (selected || example) + "\n" + fence + "\n\n";
         }
         case "table": return "\n\n| Cột 1 | Cột 2 |\n| --- | --- |\n| " + (selected || "Giá trị") + " | Giá trị |\n\n";
         case "math": return "\n\n$$\n" + (selected || "\\mathbf{y} = \\mathbf{H}\\mathbf{x} + \\mathbf{n}") + "\n$$\n\n";
@@ -364,6 +368,7 @@ function startEditor(editor) {
     const list = find("draft-list");
     const body = find("editor-body");
     const preview = find("editor-preview");
+    const refreshMermaid = createEditorMermaid(preview);
     const previewTitle = find("editor-preview-title");
     const status = find("editor-status");
     const count = find("editor-count");
@@ -510,6 +515,7 @@ function startEditor(editor) {
             empty.textContent = "Nội dung Markdown sẽ xuất hiện ở đây.";
             preview.replaceChildren(empty);
         }
+        refreshMermaid();
         if (count) {
             const words = renderedBody.trim().match(/\S+/g)?.length ?? 0;
             count.textContent = words.toLocaleString("vi-VN") + " từ";
@@ -609,6 +615,7 @@ function startEditor(editor) {
         editor.dataset.mode = mode;
         for (const button of modes) button.setAttribute("aria-pressed", String(button.dataset.editorMode === mode));
         if (mode === "preview") updatePreview();
+        refreshMermaid();
     }
 
     function downloadDraft() {
@@ -986,5 +993,6 @@ function startEditor(editor) {
     const loading = find("editor-loading");
     if (workspace) workspace.hidden = false;
     if (loading) loading.hidden = true;
+    refreshMermaid();
     if (!storage) announce("Bản nháp chỉ giữ trong tab này. Tải tệp Markdown để lưu lại.", "error");
 }
