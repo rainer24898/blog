@@ -5,7 +5,7 @@
 {{- $resolved := $src -}}
 {{- if not $isRemote -}}
   {{- with .Page -}}
-    {{- with .Resources.GetMatch $src -}}
+    {{- with .Resources.GetMatch (strings.TrimPrefix "./" $src) -}}
       {{- $resolved = .RelPermalink -}}
     {{- else -}}
       {{- $resolved = $src | relURL -}}
@@ -14,4 +14,4 @@
     {{- $resolved = $src | relURL -}}
   {{- end -}}
 {{- end -}}
-<img src="{{ $resolved | safeURL }}" alt="{{ $alt | plainify | htmlEscape }}"{{ with $title }} title="{{ . | plainify | htmlEscape }}"{{ end }} loading="lazy" decoding="async" />
+<img src="{{ $resolved | safeURL }}" alt="{{ $alt }}"{{ with $title }} title="{{ . }}"{{ end }} loading="lazy" decoding="async" />

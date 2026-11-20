@@ -1,4 +1,5 @@
 .editor-shell {
+    --editor-error: #9b3025;
     display: grid;
     gap: clamp(1.6rem, 2.6vw, 2.6rem);
     min-inline-size: 0;
@@ -6,6 +7,10 @@
     [hidden] {
         display: none;
     }
+}
+
+[data-scheme="dark"] .editor-shell {
+    --editor-error: #ffb7ac;
 }
 
 .editor-page-heading {
@@ -217,12 +222,12 @@
     gap: 1rem;
 }
 
-.editor-publish-checkbox,
+.editor-details-fields > .editor-checkbox,
 .editor-details-fields > .editor-hint {
     grid-column: 1 / -1;
 }
 
-.editor-publish-checkbox {
+.editor-checkbox {
     display: flex;
     align-items: center;
     gap: .8rem;
@@ -232,9 +237,10 @@
     font-weight: 700;
 }
 
-.editor-publish-checkbox input {
+.editor-checkbox input {
     inline-size: 1.8rem;
     block-size: 1.8rem;
+    flex: none;
     accent-color: var(--blog-accent);
 }
 
@@ -264,7 +270,8 @@
 }
 
 .editor-pane-heading h2,
-.editor-publish h2 {
+.editor-publish h2,
+.editor-image-form h2 {
     margin: 0;
     font-size: 1.9rem;
     line-height: 1.3;
@@ -278,6 +285,79 @@
 .editor-formatting .editor-button {
     min-block-size: 3.8rem;
     padding: .5rem .8rem;
+}
+
+.editor-image-dialog {
+    inline-size: min(46rem, calc(100% - 2.4rem));
+    max-block-size: calc(100dvh - 2.4rem);
+    padding: clamp(1.35rem, 4vw, 2.2rem);
+    overflow: auto;
+    overscroll-behavior: contain;
+    border: 1px solid var(--blog-border);
+    border-radius: var(--card-border-radius);
+    background: var(--blog-panel);
+    color: var(--blog-text);
+    box-shadow: var(--shadow-l2);
+
+    &::backdrop {
+        background: rgb(15 25 35 / .68);
+    }
+
+    &[data-source="file"] [data-image-source-panel="url"],
+    &[data-source="url"] [data-image-source-panel="file"] {
+        display: none;
+    }
+}
+
+.editor-image-form {
+    display: grid;
+    gap: 1.15rem;
+}
+
+.editor-image-sources {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: .65rem;
+}
+
+.editor-image-form input[type="file"] {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    cursor: pointer;
+}
+
+.editor-image-form input::file-selector-button {
+    margin-inline-end: .65rem;
+    padding: .4rem .75rem;
+    border: 1px solid var(--blog-border);
+    border-radius: .5rem;
+    background: var(--blog-panel);
+    color: var(--blog-text);
+    font: inherit;
+    font-size: 1.4rem;
+    cursor: pointer;
+}
+
+.editor-image-actions {
+    justify-content: flex-end;
+}
+
+.editor-image-status:empty,
+.editor-attachment-status:empty {
+    position: absolute;
+    inline-size: 1px;
+    block-size: 1px;
+    overflow: hidden;
+    clip-path: inset(50%);
+}
+
+.editor-image-status[data-state="error"],
+.editor-attachment-status[data-state="error"] {
+    color: var(--editor-error);
+}
+
+.editor-image-form input[aria-invalid="true"] {
+    border-color: var(--editor-error);
 }
 
 .editor-source,
@@ -411,10 +491,21 @@ button.editor-preview-image {
 }
 
 .editor-filename,
-.editor-publish-instructions {
+.editor-publish-instructions,
+.editor-attachment-status {
     flex: 0 0 100%;
     min-inline-size: 0;
     overflow-wrap: anywhere;
+}
+
+.editor-publish:has([data-editor-download-bundle]:not([hidden])) .editor-file-publish {
+    display: none;
+}
+
+.editor-publish:has([data-editor-download-bundle]:not([hidden])) [data-editor-download]:not(:hover) {
+    border-color: var(--blog-border);
+    background: var(--blog-panel);
+    color: var(--blog-text);
 }
 
 .editor-filename {
@@ -464,6 +555,10 @@ button.editor-preview-image {
 @media (prefers-reduced-motion: no-preference) {
     .editor-button {
         transition: background-color .16s ease, border-color .16s ease, color .16s ease;
+    }
+
+    .editor-image-dialog[open] {
+        animation: editor-pane-in .16s ease-out;
     }
 
     @container editor (max-width: 72rem) {

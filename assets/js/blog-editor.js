@@ -1,5 +1,6 @@
 import { parseDocument } from "yaml";
-import { renderMarkdown, enablePreviewImages } from "./markdown-preview.js";
+import { renderMarkdown, enablePreviewImages, readEditorImagePaths } from "./markdown-preview.js";
+import { storeEditorImage, loadEditorImage, exportEditorBundle } from "./editor-images.js";
 
 const storagePrefix = "raiii-editor:v1:draft:";
 const selectionKey = "raiii-editor:v1:selected";
@@ -227,6 +228,34 @@ function insertMarkdown(action, selected) {
     }
 }
 
+function imageMarkdown(address, alt) {
+    const description = alt.replace(/[\r\n]+/g, " ").replace(/[\\[\]*_<>~\x60]/g, "\\$&");
+    return "![" + description + "](<" + address + ">)";
+}
+
+function imageAddress(value) {
+    try {
+        const address = new URL(value.trim());
+        if ((address.protocol === "https:" || address.protocol === "http:") && !address.username && !address.password) {
+            return address.href;
+        }
+    } catch {
+        // An incomplete address remains in the dialog for correction.
+    }
+    return "";
+}
+
+function downloadFile(blob, filename) {
+    const file = URL.createObjectURL(blob);
+    const link = document.createElement("a");
+    link.href = file;
+    link.download = filename;
+    document.body.append(link);
+    link.click();
+    link.remove();
+    window.setTimeout(() => URL.revokeObjectURL(file), 1000);
+}
+
 async function copy(value) {
     try {
         await navigator.clipboard.writeText(value);
@@ -260,18 +289,28 @@ function startEditor(editor) {
     const count = find("editor-count");
     const importer = find("editor-import");
     const amendDraftStatus = find("editor-is-draft");
+    const bundleButton = find("editor-download-bundle");
+    const attachmentStatus = find("editor-attachment-status");
+    const bundleHelp = find("editor-bundle-help");
+    const uploadBundle = find("editor-upload-bundle");
     const modes = [...editor.querySelectorAll("[data-editor-mode]")];
     const inputs = Object.fromEntries(["title", "description", "categories", "tags", "date"].flatMap((key) => {
         const field = find("editor-" + key);
         return field ? [[key, field]] : [];
     }));
     const drafts = new Map();
+    const localImages = new Map();
+    const imageReads = new Set();
+    const missingImages = new Set();
     let storage;
     let selectedId;
     let active;
     let previewTimer;
     let saveTimer;
     let renderedBody;
+    let indexedBody;
+    let attachmentPaths = [];
+    let exportingBundle = false;
 
     try {
         storage = window.localStorage;
@@ -293,6 +332,62 @@ function startEditor(editor) {
         status.dataset.state = state;
     }
 
+    function currentAttachments() {
+        if (active.value.body !== indexedBody) {
+            indexedBody = active.value.body;
+            attachmentPaths = readEditorImagePaths(indexedBody);
+        }
+        return attachmentPaths;
+    }
+
+    function showAttachmentStatus(paths) {
+        const hasAttachments = paths.length > 0;
+        if (bundleButton) {
+            bundleButton.hidden = !hasAttachments;
+            bundleButton.disabled = exportingBundle;
+        }
+        if (bundleHelp) bundleHelp.hidden = !hasAttachments;
+        if (uploadBundle) uploadBundle.hidden = !hasAttachments;
+        if (!attachmentStatus) return;
+
+        attachmentStatus.hidden = !hasAttachments;
+        const missing = paths.filter((path) => missingImages.has(path)).length;
+        if (!hasAttachments) attachmentStatus.textContent = "";
+        else if (missing) {
+            attachmentStatus.textContent = missing + "/" + paths.length +
+                " ảnh chưa có trong trình duyệt này. Hãy mở bản nháp trên thiết bị đã chèn ảnh để tải gói đầy đủ.";
+        } else if (paths.some((path) => !localImages.has(path))) {
+            attachmentStatus.textContent = "Đang kiểm tra ảnh đính kèm…";
+        } else {
+            attachmentStatus.textContent = paths.length + " ảnh đính kèm. Tải gói ZIP để lấy cả bài và ảnh.";
+        }
+        attachmentStatus.dataset.state = missing ? "error" : "saved";
+    }
+
+    function refreshAttachments() {
+        const paths = currentAttachments();
+        for (const [path, url] of localImages) {
+            if (paths.includes(path)) continue;
+            URL.revokeObjectURL(url);
+            localImages.delete(path);
+        }
+        for (const path of paths) {
+            if (localImages.has(path) || imageReads.has(path) || missingImages.has(path)) continue;
+            imageReads.add(path);
+            loadEditorImage(path)
+                .catch(() => null)
+                .then((blob) => {
+                    imageReads.delete(path);
+                    if (!currentAttachments().includes(path)) return;
+                    if (blob) localImages.set(path, URL.createObjectURL(blob));
+                    else missingImages.add(path);
+                    renderedBody = undefined;
+                    updatePreview();
+                });
+        }
+        showAttachmentStatus(paths);
+    }
+
     function updatePreview() {
         clearTimeout(previewTimer);
         if (previewTitle) previewTitle.textContent = active.value.title.trim() || titleFallback;
@@ -301,11 +396,13 @@ function startEditor(editor) {
         renderedBody = active.value.body;
         if (renderedBody.trim()) {
             try {
-                preview.innerHTML = renderMarkdown(renderedBody);
+                refreshAttachments();
+                preview.innerHTML = renderMarkdown(renderedBody, { localImages });
             } catch {
                 preview.textContent = "Không hiển thị được bản xem trước cho nội dung này.";
             }
         } else {
+            refreshAttachments();
             const empty = document.createElement("p");
             empty.className = "editor-preview-empty";
             empty.textContent = "Nội dung Markdown sẽ xuất hiện ở đây.";
@@ -338,6 +435,7 @@ function startEditor(editor) {
 
     function openDraft(record) {
         active = record;
+        missingImages.clear();
         for (const [key, field] of Object.entries(inputs)) field.value = active.value[key];
         if (amendDraftStatus) amendDraftStatus.checked = active.value.isDraft;
         body.value = active.value.body;
@@ -409,15 +507,192 @@ function startEditor(editor) {
     }
 
     function downloadDraft() {
-        const file = URL.createObjectURL(new Blob([exportMarkdown(active.value)], { type: "text/markdown;charset=utf-8" }));
-        const link = document.createElement("a");
-        link.href = file;
-        link.download = fileInfo(active.value).filename;
-        document.body.append(link);
-        link.click();
-        link.remove();
-        window.setTimeout(() => URL.revokeObjectURL(file), 1000);
-        announce("Đã tạo tệp Markdown để tải xuống.");
+        const file = new Blob([exportMarkdown(active.value)], { type: "text/markdown;charset=utf-8" });
+        downloadFile(file, fileInfo(active.value).filename);
+        announce(currentAttachments().length
+            ? "Đã tạo tệp Markdown. Dùng gói ZIP để tải cả ảnh đính kèm."
+            : "Đã tạo tệp Markdown để tải xuống.");
+    }
+
+    async function downloadBundle() {
+        const paths = currentAttachments();
+        if (!paths.length || exportingBundle) return;
+
+        exportingBundle = true;
+        showAttachmentStatus(paths);
+        announce("Đang tạo gói bài viết và ảnh…");
+        try {
+            const draft = active.value;
+            const { filename, slug } = fileInfo(draft);
+            const bundle = await exportEditorBundle({ filename, slug, markdown: exportMarkdown(draft), paths });
+            downloadFile(bundle.blob, bundle.filename);
+            announce("Đã tạo gói ZIP chứa bài viết và ảnh.");
+        } catch (error) {
+            announce(error instanceof Error ? error.message : "Không tạo được gói bài viết và ảnh.", "error");
+        } finally {
+            exportingBundle = false;
+            showAttachmentStatus(currentAttachments());
+        }
+    }
+
+    function setupImageDialog() {
+        const dialog = find("editor-image-dialog");
+        const trigger = editor.querySelector('[data-editor-insert="image"]');
+        if (!trigger) return;
+        if (!dialog || typeof dialog.showModal !== "function") {
+            trigger.hidden = true;
+            return;
+        }
+
+        const form = find("editor-image-form");
+        const file = find("image-file");
+        const url = find("image-url");
+        const alt = find("image-alt");
+        const decorative = find("image-decorative");
+        const message = find("image-status");
+        const submit = find("image-insert");
+        const cancel = find("image-cancel");
+        const sources = [...dialog.querySelectorAll("[data-image-source]")];
+        let selection;
+        let pastedImage;
+        let busy = false;
+
+        function report(text, field) {
+            message.textContent = text;
+            message.dataset.state = field ? "error" : "saved";
+            for (const input of [file, url, alt]) input.removeAttribute("aria-invalid");
+            if (field) {
+                field.setAttribute("aria-invalid", "true");
+                field.focus();
+            }
+        }
+
+        function setSource(source) {
+            dialog.dataset.source = source;
+            file.disabled = busy || source !== "file";
+            url.disabled = busy || source !== "url";
+            alt.disabled = busy || Boolean(decorative?.checked);
+            if (decorative) decorative.disabled = busy;
+            submit.disabled = busy;
+            cancel.disabled = busy;
+            for (const button of sources) {
+                button.disabled = busy;
+                button.setAttribute("aria-pressed", String(button.dataset.imageSource === source));
+            }
+        }
+
+        function openImageDialog(returnFocus, clipboardImage) {
+            const start = body.selectionStart;
+            const end = body.selectionEnd;
+            selection = { start, end, record: active, inserted: false, returnFocus };
+            form.reset();
+            pastedImage = clipboardImage;
+            alt.value = body.value.slice(start, end).replace(/\s+/g, " ").trim().slice(0, 200);
+            setSource("file");
+            if (clipboardImage) {
+                try {
+                    const files = new DataTransfer();
+                    files.items.add(clipboardImage);
+                    file.files = files.files;
+                } catch {
+                    // Some browsers keep pasted files separate from file picker selections.
+                }
+                report("Đã dán ảnh. Thêm mô tả rồi chọn Chèn ảnh.");
+            } else {
+                report("");
+            }
+            dialog.showModal();
+            if (clipboardImage) alt.focus();
+        }
+
+        trigger.addEventListener("click", () => openImageDialog(trigger));
+        body.addEventListener("paste", (event) => {
+            const clipboard = event.clipboardData;
+            if (!clipboard || clipboard.getData("text/plain")) return;
+            const clipboardImage = [...clipboard.files].find((entry) => entry.type.startsWith("image/"));
+            if (!clipboardImage) return;
+            event.preventDefault();
+            openImageDialog(body, clipboardImage);
+        });
+
+        for (const button of sources) {
+            button.addEventListener("click", () => {
+                setSource(button.dataset.imageSource);
+                report("");
+            });
+        }
+        for (const field of [file, url, alt]) field.addEventListener("input", () => report(""));
+        file.addEventListener("change", () => { pastedImage = undefined; });
+        decorative?.addEventListener("change", () => {
+            setSource(dialog.dataset.source);
+            report("");
+        });
+        cancel.addEventListener("click", () => dialog.close());
+        dialog.addEventListener("cancel", (event) => {
+            if (busy) event.preventDefault();
+        });
+        dialog.addEventListener("close", () => {
+            if (dialog.open) return;
+            if (selection && !selection.inserted) selection.returnFocus.focus({ preventScroll: true });
+            selection = undefined;
+            pastedImage = undefined;
+        });
+
+        form.addEventListener("submit", async (event) => {
+            event.preventDefault();
+            const target = selection;
+            if (!target || busy) return;
+
+            const source = dialog.dataset.source;
+            const description = decorative?.checked ? "" : alt.value.trim();
+            if (!decorative?.checked && !description) {
+                report("Nhập mô tả ảnh hoặc chọn Ảnh trang trí.", alt);
+                return;
+            }
+
+            let address;
+            if (source === "url") {
+                address = imageAddress(url.value);
+                if (!address) {
+                    report("Nhập đường dẫn ảnh bắt đầu bằng https:// hoặc http://.", url);
+                    return;
+                }
+            } else {
+                const selected = file.files[0] ?? pastedImage;
+                if (!selected) {
+                    report("Chọn một tệp ảnh từ thiết bị.", file);
+                    return;
+                }
+                busy = true;
+                setSource(source);
+                report("Đang lưu ảnh trong trình duyệt…");
+                let failure;
+                try {
+                    const saved = await storeEditorImage(selected);
+                    address = saved.path;
+                    if (active !== target.record || !dialog.open || selection !== target) return;
+                    localImages.set(address, URL.createObjectURL(saved.blob));
+                    missingImages.delete(address);
+                } catch (error) {
+                    failure = error instanceof Error ? error.message : "Không lưu được ảnh trong trình duyệt.";
+                } finally {
+                    busy = false;
+                    setSource(source);
+                }
+                if (failure) {
+                    report(failure, file);
+                    return;
+                }
+            }
+
+            body.setRangeText(imageMarkdown(address, description), target.start, target.end, "end");
+            target.inserted = true;
+            dialog.close();
+            body.focus({ preventScroll: true });
+            collectChanges();
+            updatePreview();
+            saveDraft();
+        });
     }
 
     for (const field of [...Object.values(inputs), body, amendDraftStatus].filter(Boolean)) {
@@ -425,6 +700,7 @@ function startEditor(editor) {
     }
     for (const button of modes) button.addEventListener("click", () => setMode(button.dataset.editorMode));
     for (const button of editor.querySelectorAll("[data-editor-insert]")) {
+        if (button.dataset.editorInsert === "image") continue;
         button.addEventListener("click", () => {
             const start = body.selectionStart;
             const end = body.selectionEnd;
@@ -492,6 +768,7 @@ function startEditor(editor) {
     });
 
     find("editor-download").addEventListener("click", downloadDraft);
+    bundleButton?.addEventListener("click", downloadBundle);
     find("editor-copy").addEventListener("click", async () => {
         const ok = await copy(exportMarkdown(active.value));
         announce(ok ? "Đã sao chép Markdown." : "Không sao chép được. Hãy tải tệp Markdown.", ok ? "saved" : "error");
@@ -513,6 +790,7 @@ function startEditor(editor) {
     openDraft(drafts.get(selectedId) ?? [...drafts.values()].sort((a, b) => b.value.updatedAt - a.value.updatedAt)[0] ?? makeRecord());
     setMode("write");
     enablePreviewImages(preview);
+    setupImageDialog();
     const workspace = find("editor-workspace");
     const loading = find("editor-loading");
     if (workspace) workspace.hidden = false;

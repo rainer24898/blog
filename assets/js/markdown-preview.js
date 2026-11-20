@@ -1,5 +1,6 @@
 import MarkdownIt from "markdown-it";
 import { katex } from "@mdit/plugin-katex";
+import { editorImagePath } from "./editor-images.js";
 
 const markdown = new MarkdownIt({ html: false, linkify: true }).use(katex, {
     delimiters: "all",
@@ -28,7 +29,17 @@ markdown.renderer.rules.image = (tokens, index, options, env, renderer) => {
     const token = tokens[index];
     const alt = escape(renderer.renderInlineAsText(token.children, options, env));
     const title = escape(token.attrGet("title") ?? "");
-    const address = previewImageUrl(token.attrGet("src"));
+    const source = token.attrGet("src");
+    const localPath = editorImagePath(source);
+    if (localPath) {
+        const url = env.localImages?.get(localPath);
+        if (!url || !url.startsWith("blob:")) {
+            return '<span class="editor-image-placeholder">Ảnh từ thiết bị' +
+                (alt ? " · " + alt : "") + "</span>";
+        }
+        return '<img src="' + escape(url) + '" alt="' + alt + '" title="' + title + '" decoding="async">';
+    }
+    const address = previewImageUrl(source);
     if (!address) return alt;
     const url = escape(address);
 
@@ -52,8 +63,22 @@ markdown.renderer.rules.table_open = () =>
     '<div class="editor-table-scroll" role="group" aria-label="Bảng có thể cuộn ngang" tabindex="0"><table>\n';
 markdown.renderer.rules.table_close = () => "</table></div>\n";
 
-export function renderMarkdown(source) {
-    return markdown.render(source);
+export function renderMarkdown(source, { localImages } = {}) {
+    return markdown.render(source, { localImages });
+}
+
+export function readEditorImagePaths(source) {
+    if (!source.includes("images/raiii-")) return [];
+    const paths = new Set();
+    for (const token of markdown.parse(source, {})) {
+        if (!token.children) continue;
+        for (const child of token.children) {
+            if (child.type !== "image") continue;
+            const path = editorImagePath(child.attrGet("src"));
+            if (path) paths.add(path);
+        }
+    }
+    return [...paths];
 }
 
 export function enablePreviewImages(preview) {

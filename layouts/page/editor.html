@@ -8,7 +8,7 @@
     <section class="editor-shell" data-blog-editor data-mode="write" aria-labelledby="editor-page-title">
         <header class="editor-page-heading">
             <h1 id="editor-page-title">{{ .Title }}</h1>
-            <p>Bản nháp lưu trong trình duyệt này. Xuất tệp Markdown để đăng lên blog.</p>
+            <p>Bản nháp lưu trong trình duyệt này. Xuất bài để đăng lên blog.</p>
         </header>
 
         <p class="editor-loading" data-editor-loading role="status">Đang mở trình soạn thảo…</p>
@@ -58,7 +58,7 @@
                             <input id="editor-tags" type="text" placeholder="MIMO, kernel" data-editor-tags aria-describedby="editor-taxonomy-hint">
                         </div>
                         <p id="editor-taxonomy-hint" class="editor-hint">Phân cách các chủ đề và thẻ bằng dấu phẩy.</p>
-                        <label class="editor-publish-checkbox">
+                        <label class="editor-checkbox">
                             <input type="checkbox" data-editor-is-draft>
                             Giữ ở dạng bản nháp trong Hugo
                         </label>
@@ -87,6 +87,8 @@
                             <button class="editor-button" type="button" data-editor-insert="code">Khối mã</button>
                             <button class="editor-button" type="button" data-editor-insert="table">Bảng</button>
                             <button class="editor-button" type="button" data-editor-insert="math">Công thức</button>
+                            <button class="editor-button" type="button" data-editor-insert="image"
+                                aria-haspopup="dialog" aria-controls="editor-image-dialog">Chèn ảnh</button>
                         </div>
                         <textarea id="editor-source" class="editor-source" aria-label="Nội dung Markdown" data-editor-body
                             rows="14" spellcheck="false" autocapitalize="off" placeholder="## Bắt đầu một mục mới"></textarea>
@@ -113,16 +115,61 @@
                 <div class="editor-actions">
                     <button class="editor-button" type="button" data-editor-copy>Sao chép Markdown</button>
                     <button class="editor-button editor-button-primary" type="button" data-editor-download>Tải tệp .md</button>
+                    <button class="editor-button editor-button-primary" type="button" data-editor-download-bundle hidden>Tải gói ZIP</button>
                 </div>
+                <p class="editor-hint editor-attachment-status" data-editor-attachment-status role="status"></p>
                 <div class="editor-filename">
                     <code data-editor-filename aria-label="Tên tệp xuất"></code>
                     <button class="editor-button editor-button-quiet" type="button" data-editor-copy-filename>Sao chép tên tệp</button>
                 </div>
+                <p class="editor-hint editor-publish-instructions" data-editor-bundle-help hidden>Giải nén gói ZIP rồi tải thư mục chứa <code>index.md</code> và <code>images/</code> vào <code>content/post</code> trên GitHub. Khi cập nhật bài cũ, thay tệp Markdown cũ bằng thư mục này để tránh trùng đường dẫn.</p>
                 {{ with .Params.publishURL }}
-                    <p class="editor-hint editor-publish-instructions">Để đăng bài, tạo một tệp trong <code>content/post</code> trên GitHub với tên của tệp đã tải, dán Markdown rồi commit. GitHub Actions sẽ chạy quy trình triển khai.</p>
-                    <a class="editor-button editor-publish-link" href="{{ . }}" target="_blank" rel="noopener noreferrer">Mở GitHub</a>
+                    <p class="editor-hint editor-publish-instructions editor-file-publish">Để đăng bài, tạo một tệp trong <code>content/post</code> trên GitHub với tên của tệp đã tải, dán Markdown rồi commit. GitHub Actions sẽ chạy quy trình triển khai.</p>
+                    <a class="editor-button editor-file-publish" href="{{ . }}" target="_blank" rel="noopener noreferrer">Mở GitHub</a>
+                {{ end }}
+                {{ with .Params.publishBundleURL }}
+                    <a class="editor-button" href="{{ . }}" target="_blank" rel="noopener noreferrer"
+                        data-editor-upload-bundle hidden>Tải thư mục lên GitHub</a>
                 {{ end }}
             </footer>
+
+            <dialog class="editor-image-dialog" id="editor-image-dialog" data-editor-image-dialog data-source="file"
+                aria-labelledby="editor-image-dialog-title">
+                <form class="editor-image-form" method="dialog" data-editor-image-form novalidate>
+                    <h2 id="editor-image-dialog-title">Chèn ảnh</h2>
+                    <div class="editor-image-sources" role="group" aria-label="Nguồn ảnh">
+                        <button class="editor-button" type="button" data-image-source="file" aria-pressed="true"
+                            aria-controls="editor-image-file-panel">Từ thiết bị</button>
+                        <button class="editor-button" type="button" data-image-source="url" aria-pressed="false"
+                            aria-controls="editor-image-url-panel">Từ URL</button>
+                    </div>
+                    <div class="editor-field" id="editor-image-file-panel" data-image-source-panel="file">
+                        <label for="editor-image-file">Tệp ảnh</label>
+                        <input id="editor-image-file" type="file" accept=".jpg,.jpeg,.png,.webp,.gif,image/jpeg,image/png,image/webp,image/gif"
+                            data-image-file aria-describedby="editor-image-file-hint">
+                        <p class="editor-hint" id="editor-image-file-hint">JPG, PNG, WebP hoặc GIF, tối đa 10 MiB mỗi ảnh. Bạn cũng có thể dán ảnh trực tiếp vào ô Markdown.</p>
+                    </div>
+                    <div class="editor-field" id="editor-image-url-panel" data-image-source-panel="url">
+                        <label for="editor-image-url">Địa chỉ ảnh</label>
+                        <input id="editor-image-url" type="text" inputmode="url" autocomplete="off" spellcheck="false"
+                            placeholder="https://…" data-image-url>
+                    </div>
+                    <div class="editor-field">
+                        <label for="editor-image-alt">Văn bản thay thế</label>
+                        <input id="editor-image-alt" type="text" maxlength="300" data-image-alt aria-describedby="editor-image-alt-hint">
+                        <p class="editor-hint" id="editor-image-alt-hint">Mô tả ngắn nội dung ảnh cho người đọc dùng trình đọc màn hình.</p>
+                    </div>
+                    <label class="editor-checkbox">
+                        <input type="checkbox" data-image-decorative>
+                        Ảnh chỉ để trang trí
+                    </label>
+                    <p class="editor-hint editor-image-status" data-image-status role="status"></p>
+                    <div class="editor-actions editor-image-actions">
+                        <button class="editor-button" type="button" data-image-cancel>Hủy</button>
+                        <button class="editor-button editor-button-primary" type="submit" data-image-insert>Chèn ảnh</button>
+                    </div>
+                </form>
+            </dialog>
         </div>
     </section>
 

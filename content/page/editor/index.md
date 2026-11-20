@@ -4,6 +4,7 @@ description: "Viết, xem trước và xuất bài Markdown cho blog Hugo ngay t
 slug: "viet-bai"
 layout: "editor"
 publishURL: "https://github.com/rainer24898/blog/new/master/content/post"
+publishBundleURL: "https://github.com/rainer24898/blog/upload/master/content/post"
 menu:
     main:
         name: "Viết bài"
